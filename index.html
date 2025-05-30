@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextileGuru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f5ff;
+        }
+        .program-card {
+            transition: all 0.3s ease;
+        }
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .audio-player {
+            background: linear-gradient(145deg, #f0e6ff, #ffffff);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
+        }
+        .audio-player:hover {
+            box-shadow: 0 6px 20px rgba(107, 70, 193, 0.15);
+        }
+        .play-btn {
+            transition: all 0.2s ease;
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+        .progress-bar {
+            height: 6px;
+            cursor: pointer;
+        }
+        .progress-bar::-webkit-progress-bar {
+            background-color: #e0d5f5;
+            border-radius: 3px;
+        }
+        .progress-bar::-webkit-progress-value {
+            background: linear-gradient(90deg, #6b46c1, #9f7aea);
+            border-radius: 3px;
+        }
+        .breadcrumb-item::after {
+            content: '/';
+            margin: 0 8px;
+            color: #9f7aea;
+        }
+        .breadcrumb-item:last-child::after {
+            content: '';
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-purple-800 to-purple-600 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        <h1 class="text-2xl font-bold">TextileGuru</h1>
+                    </div>
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="#" class="hover:text-purple-200 font-medium">Home</a>
+                        <a href="#" class="hover:text-purple-200 font-medium">Programs</a>
+                        <a href="#" class="hover:text-purple-200 font-medium">About</a>
+                        <a href="#" class="hover:text-purple-200 font-medium">Contact</a>
+                    </nav>
+                    <button class="md:hidden focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            
+            <div id="breadcrumb" class="flex flex-wrap text-sm text-purple-700 mb-6">
+                <span class="breadcrumb-item">Home</span>
+                <span id="program-breadcrumb" class="breadcrumb-item hidden">Program</span>
+                <span id="subject-breadcrumb" class="breadcrumb-item hidden">Subject</span>
+                <span id="chapter-breadcrumb" class="breadcrumb-item hidden">Chapter</span>
+            </div>
+
+            <!-- Programs View -->
+            <div id="programs-view">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Textile Education Programs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Program cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Subjects View -->
+            <div id="subjects-view" class="hidden">
+                <h2 id="program-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <p class="text-gray-600 mb-8">Select a subject to explore chapters and learning materials.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-container">
+                    <!-- Subject cards will be generated here -->
+                </div>
+                <button id="back-to-programs" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Back to Programs
+                </button>
+            </div>
+
+            <!-- Chapters View -->
+            <div id="chapters-view" class="hidden">
+                <h2 id="subject-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <p class="text-gray-600 mb-8">Select a chapter to access audio lessons.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="chapters-container">
+                    <!-- Chapter cards will be generated here -->
+                </div>
+                <button id="back-to-subjects" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Back to Subjects
+                </button>
+            </div>
+
+            <!-- Audio Files View -->
+            <div id="audio-files-view" class="hidden">
+                <h2 id="chapter-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <p class="text-gray-600 mb-8">Listen to the audio lessons for this chapter.</p>
+                
+                <div id="audio-files-container" class="space-y-6">
+                    <!-- Audio players will be generated here -->
+                </div>
+                
+                <button id="back-to-chapters" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Back to Chapters
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-purple-900 text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">TextileGuru</h3>
+                        <p class="text-purple-200">Dr. Sachin M. Landage. <br>
+                        Dept. of Textiles<br> D.K.T.E. Society's, Textile & Engineering Institute, Ichalkaranji, Maharashtra, India.</p>
+                        <br>
+                    </div>
+                    <!-- <div>
+                        <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-purple-200 hover:text-white">Programs</a></li>
+                            <li><a href="#" class="text-purple-200 hover:text-white">About Us</a></li>
+                            <li><a href="#" class="text-purple-200 hover:text-white">Contact</a></li>
+                            <li><a href="#" class="text-purple-200 hover:text-white">Privacy Policy</a></li>
+                        </ul>
+                    </div> -->
+                    <!-- <div>
+                        <h3 class="text-xl font-semibold mb-4">Connect With Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-200 hover:text-white">
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-purple-200 hover:text-white">
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-purple-200 hover:text-white">
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="border-t border-purple-800 mt-8 pt-6 text-center text-purple-300">
+                    <p>&copy; 2025 TextileGuru. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Data structure for programs, subjects, chapters, and audio files
+        const chemistryOfNaturalFibers = {
+        id: 99, // Use a unique ID
+        title: "Chemistry of Natural Fibers",
+        description: "Detailed study of the chemistry involved in natural textile fibers.",
+        chapters: [
+            { id: 1, title: "Unit 01. Introduction to Textiles", description: "Introduction to textiles", audioFiles: [
+                { id: 1, title: "FLOW CHART OF YARN MANUFACTURING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 1.mp3" },
+                { id: 2, title: "FLOW CHART OF WEAVING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 2.mp3" },
+                { id: 3, title: "FLOW CHART OF CHEMICAL PROCESSING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 3.mp3"},
+                { id: 4, title: "FLOW CHART OF GARMENT MANUFACTURING PROCESS", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 4.mp3" },
+                { id: 5, title: "INTRODUCTION TO TEXTILES", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 5.mp3" }
+            ]},
+            { id: 2, title: "Unit 02. Textile Fibres", description: "Learn about textile fibres", audioFiles: [
+                { id: 1, title: "01. Degree of Polymerization", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 1.mp3" },
+                { id: 2, title: "02. Cohesive Energy Density", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 2.mp3" },
+                { id: 3, title: "03. MOISTURE REGAIN AND MOISTURE CONTENT", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 3.mp3"},
+                { id: 4, title: "04. Classification of textile Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 4.mp3" },
+                { id: 5, title: "05. ESSENTIAL PROPERTIES OF FIBRE", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 5.mp3" },
+                { id: 6, title: "06. Desirable Properties of fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 6.mp3" },
+                { id: 7, title: "07. ORIENTATION", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 7.mp3" }
+            ]},
+            { id: 3, title: "Unit 03. Cotton Fibre", description: "All about cotton fibre", audioFiles: [
+                { id: 1, title: "01. CULTIVATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 1.mp3" },
+                { id: 2, title: "02. BOTANICAL CLASSIFICATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 2.mp3" },
+                { id: 3, title: "03. MORPHOLOGICAL STRUCTURE OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 3.mp3"},
+                { id: 4, title: "04. CHEMICAL COMPOSITION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 4.mp3" },
+                { id: 5, title: "05. Crystal structure of cellulose", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 5.mp3" },
+                { id: 6, title: "06. REACTIONS OF CELLULOSE", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 6.mp3" },
+                { id: 7, title: "07. Physical and chemical properties of Cotton", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 7.mp3" }
+            ] },
+            { id: 4, title: "Unit 04. Unconventional Natural Fibres", description: "Study of lesser-known fibres", audioFiles: [
+                { id: 1, title: "01. General Information About Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 1.mp3" },
+                { id: 2, title: "02. Chemical Composition of Jute Fibre.docx", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 2.mp3" },
+                { id: 3, title: "03. Cultivation of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 3.mp3"},
+                { id: 4, title: "04. Retting of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 4.mp3" },
+                { id: 5, title: "05. Morphological Structure of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 5.mp3" },
+                { id: 6, title: "06. Physical and Chemical Properties of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 6.mp3" },
+                { id: 7, title: "07. History of Flax Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 7.mp3" },
+                { id: 8, title: "08. Cultivation and Retting of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 8.mp3" },
+                { id: 9, title: "09. Physical and Chemical Properties of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 9.mp3" },
+            ] },
+            { id: 5, title: "Unit 05. Wool Fibre", description: "Detailed insights into wool fibre", audioFiles: [
+                { id: 1, title: "01. Grading of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 1.mp3" },
+                { id: 2, title: "02. Morphological Structure of wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 2.mp3" },
+                { id: 3, title: "03. Chemical Composition of wool fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 3.mp3"},
+                { id: 4, title: "04. Chemical Structure of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 4.mp3" },
+                { id: 5, title: "05. Different types of forces are present in wool fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 5.mp3" },
+                { id: 6, title: "06. Physical and Chemical Properties of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 6.mp3" }
+            ] },
+            { id: 6, title: "Unit 06. Silk Fibre", description: "Exploration of silk fibre chemistry", audioFiles: [
+                { id: 1, title: "01. Varieties of Silk Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 1.mp3" },
+                { id: 2, title: "02. Sericulture of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 2.mp3" },
+                { id: 3, title: "03. Production Of Raw Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 3.mp3"},
+                { id: 4, title: "04. Morphological Structure Of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 4.mp3" },
+                { id: 5, title: "05. Chemical composition and chemical structure of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 5.mp3" },
+                { id: 6, title: "06. Different types of forces are present in silk fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 6.mp3" },
+                { id: 7, title: "07. Physical and Chemical Properties of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 7.mp3" }
+            ] }
+            ]
+        };
+        const programsData = [
+            {
+                id: 1,
+                title: "Textile Chemistry",
+                color: "bg-gradient-to-br from-blue-500 to-blue-700",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>`,
+                subjects: [chemistryOfNaturalFibers]
+            }
+        ];
+       
+
+        // Current state variables
+        let currentProgram = null;
+        let currentSubject = null;
+        let currentChapter = null;
+
+        // DOM elements
+        const programsView = document.getElementById('programs-view');
+        const subjectsView = document.getElementById('subjects-view');
+        const chaptersView = document.getElementById('chapters-view');
+        const audioFilesView = document.getElementById('audio-files-view');
+        
+        const programBreadcrumb = document.getElementById('program-breadcrumb');
+        const subjectBreadcrumb = document.getElementById('subject-breadcrumb');
+        const chapterBreadcrumb = document.getElementById('chapter-breadcrumb');
+        
+        const programTitle = document.getElementById('program-title');
+        const subjectTitle = document.getElementById('subject-title');
+        const chapterTitle = document.getElementById('chapter-title');
+        
+        const subjectsContainer = document.getElementById('subjects-container');
+        const chaptersContainer = document.getElementById('chapters-container');
+        const audioFilesContainer = document.getElementById('audio-files-container');
+        
+        const backToPrograms = document.getElementById('back-to-programs');
+        const backToSubjects = document.getElementById('back-to-subjects');
+        const backToChapters = document.getElementById('back-to-chapters');
+
+        // Initialize the application
+        function init() {
+            renderPrograms();
+            setupEventListeners();
+        }
+
+        // Render programs
+        function renderPrograms() {
+            const programsContainer = document.querySelector('#programs-view .grid');
+            programsContainer.innerHTML = '';
+            
+            programsData.forEach(program => {
+                const programCard = document.createElement('div');
+                programCard.className = `program-card rounded-xl overflow-hidden shadow-lg ${program.color} text-white`;
+                programCard.innerHTML = `
+                    <div class="p-6">
+                        <div class="mb-4">
+                            ${program.icon}
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${program.title}</h3>
+                        <button class="view-program bg-white bg-opacity-20 hover:bg-opacity-30 text-white py-2 px-4 rounded-lg transition duration-300 flex items-center" data-program-id="${program.id}">
+                            Explore Program
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                programsContainer.appendChild(programCard);
+            });
+        }
+
+        // Render subjects for a program
+        function renderSubjects(programId) {
+            currentProgram = programsData.find(p => p.id === programId);
+            if (!currentProgram) return;
+            
+            programTitle.textContent = currentProgram.title;
+            programBreadcrumb.textContent = currentProgram.title;
+            programBreadcrumb.classList.remove('hidden');
+            
+            subjectsContainer.innerHTML = '';
+            
+            currentProgram.subjects.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300';
+                subjectCard.innerHTML = `
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${subject.title}</h3>
+                        <p class="text-gray-600 mb-4">${subject.description}</p>
+                        <button class="view-subject bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300 flex items-center" data-subject-id="${subject.id}">
+                            View Chapters
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                subjectsContainer.appendChild(subjectCard);
+            });
+            
+            programsView.classList.add('hidden');
+            subjectsView.classList.remove('hidden');
+            chaptersView.classList.add('hidden');
+            audioFilesView.classList.add('hidden');
+        }
+
+        // Render chapters for a subject
+        function renderChapters(subjectId) {
+            currentSubject = currentProgram.subjects.find(s => s.id === subjectId);
+            if (!currentSubject) return;
+            
+            subjectTitle.textContent = currentSubject.title;
+            subjectBreadcrumb.textContent = currentSubject.title;
+            subjectBreadcrumb.classList.remove('hidden');
+            
+            chaptersContainer.innerHTML = '';
+            
+            currentSubject.chapters.forEach(chapter => {
+                const chapterCard = document.createElement('div');
+                chapterCard.className = 'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300';
+                chapterCard.innerHTML = `
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${chapter.title}</h3>
+                        <p class="text-gray-600 mb-4">${chapter.description}</p>
+                        <button class="view-chapter bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300 flex items-center" data-chapter-id="${chapter.id}">
+                            Access Audio Lessons
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                chaptersContainer.appendChild(chapterCard);
+            });
+            
+            programsView.classList.add('hidden');
+            subjectsView.classList.add('hidden');
+            chaptersView.classList.remove('hidden');
+            audioFilesView.classList.add('hidden');
+        }
+
+        // Render audio files for a chapter
+        function renderAudioFiles(chapterId) {
+            currentChapter = currentSubject.chapters.find(c => c.id === chapterId);
+            if (!currentChapter) return;
+            
+            chapterTitle.textContent = currentChapter.title;
+            chapterBreadcrumb.textContent = currentChapter.title;
+            chapterBreadcrumb.classList.remove('hidden');
+            
+            audioFilesContainer.innerHTML = '';
+            
+            currentChapter.audioFiles.forEach((audioFile, index) => {
+                const audioPlayer = document.createElement('div');
+                audioPlayer.className = 'audio-player rounded-xl p-4 bg-white';
+                audioPlayer.innerHTML = `
+                        <div class="flex flex-col md:flex-row md:items-center justify-between">
+                            <div class="flex-1">
+                            <h4 class="text-lg font-semibold text-gray-800">${audioFile.title}</h4>
+                            </div>
+                            <div class="flex items-center mt-3 md:mt-0">
+                            <audio id="audio-${audioFile.id}" controls class="mr-4">
+                                <source src="${audioFile.filePath}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            </div>
+                        </div>
+                        `;
+
+                audioFilesContainer.appendChild(audioPlayer);
+            });
+            
+            programsView.classList.add('hidden');
+            subjectsView.classList.add('hidden');
+            chaptersView.classList.add('hidden');
+            audioFilesView.classList.remove('hidden');
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Program selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-program')) {
+                    const programId = parseInt(e.target.closest('.view-program').dataset.programId);
+                    renderSubjects(programId);
+                }
+            });
+            
+            // Subject selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-subject')) {
+                    const subjectId = parseInt(e.target.closest('.view-subject').dataset.subjectId);
+                    renderChapters(subjectId);
+                }
+            });
+            
+            // Chapter selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-chapter')) {
+                    const chapterId = parseInt(e.target.closest('.view-chapter').dataset.chapterId);
+                    renderAudioFiles(chapterId);
+                }
+            });
+            
+            // Audio player controls
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.play-btn')) {
+                    const audioId = parseInt(e.target.closest('.play-btn').dataset.audioId);
+                    togglePlayPause(e.target.closest('.play-btn'), audioId);
+                }
+            });
+            
+            // Navigation back buttons
+            backToPrograms.addEventListener('click', function() {
+                programsView.classList.remove('hidden');
+                subjectsView.classList.add('hidden');
+                programBreadcrumb.classList.add('hidden');
+                subjectBreadcrumb.classList.add('hidden');
+                chapterBreadcrumb.classList.add('hidden');
+                currentProgram = null;
+            });
+            
+            backToSubjects.addEventListener('click', function() {
+                subjectsView.classList.remove('hidden');
+                chaptersView.classList.add('hidden');
+                subjectBreadcrumb.classList.add('hidden');
+                chapterBreadcrumb.classList.add('hidden');
+                currentSubject = null;
+            });
+            
+            backToChapters.addEventListener('click', function() {
+                chaptersView.classList.remove('hidden');
+                audioFilesView.classList.add('hidden');
+                chapterBreadcrumb.classList.add('hidden');
+                currentChapter = null;
+            });
+            
+            // Breadcrumb navigation
+            document.getElementById('breadcrumb').addEventListener('click', function(e) {
+                if (e.target.textContent === 'Home') {
+                    programsView.classList.remove('hidden');
+                    subjectsView.classList.add('hidden');
+                    chaptersView.classList.add('hidden');
+                    audioFilesView.classList.add('hidden');
+                    programBreadcrumb.classList.add('hidden');
+                    subjectBreadcrumb.classList.add('hidden');
+                    chapterBreadcrumb.classList.add('hidden');
+                    currentProgram = null;
+                    currentSubject = null;
+                    currentChapter = null;
+                } else if (e.target === programBreadcrumb) {
+                    subjectsView.classList.remove('hidden');
+                    chaptersView.classList.add('hidden');
+                    audioFilesView.classList.add('hidden');
+                    subjectBreadcrumb.classList.add('hidden');
+                    chapterBreadcrumb.classList.add('hidden');
+                    currentSubject = null;
+                    currentChapter = null;
+                } else if (e.target === subjectBreadcrumb) {
+                    chaptersView.classList.remove('hidden');
+                    audioFilesView.classList.add('hidden');
+                    chapterBreadcrumb.classList.add('hidden');
+                    currentChapter = null;
+                }
+            });
+        }
+
+        // Toggle play/pause for audio
+        function togglePlayPause(button, audioId) {
+            const isPlaying = button.classList.contains('playing');
+            
+            // Reset all buttons to play state
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.classList.remove('playing');
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `;
+            });
+            
+            // Reset all progress bars
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                bar.value = 0;
+            });
+            
+            if (!isPlaying) {
+                // Set this button to pause state
+                button.classList.add('playing');
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `;
+                
+                // Simulate audio progress
+                simulateAudioProgress(button.closest('.audio-player').querySelector('.progress-bar'), audioId);
+            }
+        }
+
+        // Simulate audio progress
+        function simulateAudioProgress(progressBar, audioId) {
+            let progress = 0;
+            const audioFile = currentChapter.audioFiles.find(a => a.id === audioId);
+            const timeDisplay = document.querySelector(`.audio-time-${audioId}`);
+            
+            // Parse duration
+            const durationParts = audioFile.duration.split(':');
+            const totalSeconds = parseInt(durationParts[0]) * 60 + parseInt(durationParts[1]);
+            
+            const interval = setInterval(() => {
+                if (progress >= 100 || !document.querySelector('.play-btn.playing')) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                progress += 0.5;
+                progressBar.value = progress;
+                
+                // Update time display
+                const currentSeconds = Math.floor((progress / 100) * totalSeconds);
+                const minutes = Math.floor(currentSeconds / 60);
+                const seconds = currentSeconds % 60;
+                timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')} / ${audioFile.duration}`;
+                
+            }, 500);
+        }
+
+        init();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'946c8857613547c3',t:'MTc0ODQyMjUyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
