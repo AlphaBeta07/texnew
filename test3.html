@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextileGuru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E98Q0BFYM0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-E98Q0BFYM0');
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f5ff;
+        }
+        .program-card {
+            transition: all 0.3s ease;
+        }
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .audio-player {
+            background: linear-gradient(145deg, #f0e6ff, #ffffff);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
+        }
+        .audio-player:hover {
+            box-shadow: 0 6px 20px rgba(107, 70, 193, 0.15);
+        }
+        .play-btn {
+            transition: all 0.2s ease;
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+        .progress-bar {
+            height: 6px;
+            cursor: pointer;
+        }
+        .progress-bar::-webkit-progress-bar {
+            background-color: #e0d5f5;
+            border-radius: 3px;
+        }
+        .progress-bar::-webkit-progress-value {
+            background: linear-gradient(90deg, #6b46c1, #9f7aea);
+            border-radius: 3px;
+        }
+        .breadcrumb-item::after {
+            content: '/';
+            margin: 0 8px;
+            color: #9f7aea;
+        }
+        .breadcrumb-item:last-child::after {
+            content: '';
+            margin: 0;
+        }
+        .project-card {
+        opacity: 0.75;
+        transform: translateY(50px);
+        transition: all 0.3s ease;
+        }
+    
+        .project-card:hover {
+            opacity: 1;
+        }
+        
+        .project-card-inner {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            border-radius: 1.5rem;
+            height: 8rem;
+            align-items: center;
+            background-color: white;
+            border: 1px solid black;
+            position: relative;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover .project-card-inner {
+            top: -0.5rem;
+            left: -0.5rem;
+        }
+        
+        .project-card-bg-1 {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 1.5rem;
+            z-index: -10;
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover .project-card-bg-1 {
+            background-color: #ffd074;
+        }
+        
+        .project-card-bg-2 {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0.375rem;
+            top: 0.375rem;
+            background-color: #d1d5db; /* zinc-400 */
+            border: 1px solid #a1a1aa; /* zinc-400 */
+            border-radius: 1.5rem;
+            z-index: -20;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .project-card:hover .project-card-bg-2 {
+            left: 0.5rem;
+            top: 0.5rem;
+            background-color: #b087ff;
+            border-color: black;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 0.75;
+            transform: translateY(0);
+        }
+        .content-card {
+        opacity: 0.75;
+        transform: translateY(50px);
+        transition: all 0.3s ease;
+        width: 100%;
+        }
+        
+        .content-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .content-card-inner {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            min-height: 8rem;
+            background-color: white;
+            border: 1px solid black;
+            position: relative;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .content-card:hover .content-card-inner {
+            top: -0.5rem;
+            left: -0.5rem;
+        }
+        
+        .content-card-bg-1 {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 1.5rem;
+            z-index: -10;
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover .content-card-bg-1 {
+            background-color: #ffd074;
+        }
+        
+        .content-card-bg-2 {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0.375rem;
+            top: 0.375rem;
+            background-color: #d1d5db;
+            border: 1px solid #a1a1aa;
+            border-radius: 1.5rem;
+            z-index: -20;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-card:hover .content-card-bg-2 {
+            left: 0.5rem;
+            top: 0.5rem;
+            background-color: #b087ff;
+            border-color: black;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-card-content {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1rem; /* Space between content and button */
+        }
+        .explore-btn-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end; /* Align button to right */
+        }
+        .breadcrumb-item::after {
+            content: '/';
+            margin: 0 8px;
+            color: #9f7aea;
+        }
+        .breadcrumb-item:last-child::after {
+            content: '';
+            margin: 0;
+        }
+        .content-card-inner.flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .audio-player-container {
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 0.5rem;
+            background: #f3f4f6;
+            padding: 0.5rem;
+        }
+
+        audio::-webkit-media-controls-panel {
+            background: #f3f4f6;
+        }
+        
+        .audio-player {
+            width: 100%;
+            background-color: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7550ca, #9f7aea);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6b46c1, #9f7aea);
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .volume-slider {
+            flex-grow: 1;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #6b46c1;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-purple-800 to-purple-600 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        <h1 class="text-2xl font-bold">TextileGuru</h1>
+                    </div>
+                    <button class="md:hidden focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            
+            <div id="breadcrumb" class="flex flex-wrap text-sm text-purple-700 mb-6">
+                <span class="breadcrumb-item">Home</span>
+                <span id="program-breadcrumb" class="breadcrumb-item hidden">Program</span>
+                <span id="subject-breadcrumb" class="breadcrumb-item hidden">Subject</span>
+                <span id="chapter-breadcrumb" class="breadcrumb-item hidden">Chapter</span>
+            </div>
+
+            <!-- Programs View -->
+            <div id="programs-view">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Textile Education Programs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Program cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Subjects View -->
+            <div id="subjects-view" class="hidden">
+                <h2 id="program-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <p class="text-gray-600 mb-8">Select a subject to explore chapters and learning materials.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-container">
+                    <!-- Subject cards will be generated here -->
+                </div>
+                <button id="back-to-programs" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Back to Programs
+                </button>
+            </div>
+
+            <!-- Chapters View -->
+            <div id="chapters-view" class="hidden">
+                <h2 id="subject-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <p class="text-gray-600 mb-8">Select a chapter to access audio lessons.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="chapters-container">
+                    <!-- Chapter cards will be generated here -->
+                </div>
+                <button id="back-to-subjects" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Back to Subjects
+                </button>
+            </div>
+
+            <!-- Audio Files View -->
+            <div id="audio-files-view" class="hidden">
+                <h2 id="chapter-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <p class="text-gray-600 mb-8">Listen to the audio lessons for this chapter.</p>
+                
+                <div id="audio-files-container" class="space-y-6">
+                    <!-- Audio players will be generated here -->
+                </div>
+                
+                <button id="back-to-chapters" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Back to Chapters
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-purple-900 text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">TextileGuru</h3>
+                        <p class="text-purple-200">Dr. Sachin M. Landage. <br>
+                        Dept. of Textiles<br> D.K.T.E. Society's, Textile & Engineering Institute, Ichalkaranji, Maharashtra, India.</p>
+                        <br>Email - <a href="smlandage@dkte.ac.in" className="text-gray-500 hover:text-primary transition">smlandage@dkte.ac.in</a>
+                    </div>
+                </div>
+                <div class="border-t border-purple-800 mt-8 pt-6 text-center text-purple-300">
+                    <p>&copy; 2025 TextileGuru. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Data structure for programs, subjects, chapters, and audio files
+        const chemistryOfNaturalFibers = {
+        id: 99, 
+        title: "Chemistry of Natural Fibers",
+        description: "Detailed study of the chemistry involved in natural textile fibers.",
+        chapters: [
+            { id: 1, title: "Unit 01. Introduction to Textiles", description: "Introduction to textiles", audioFiles: [
+                { id: 1, title: "01. FLOW CHART OF YARN MANUFACTURING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 1.mp3" },
+                { id: 2, title: "02. FLOW CHART OF WEAVING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 2.mp3" },
+                { id: 3, title: "03. FLOW CHART OF CHEMICAL PROCESSING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 3.mp3"},
+                { id: 4, title: "04. FLOW CHART OF GARMENT MANUFACTURING PROCESS", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 4.mp3" },
+                { id: 5, title: "05. INTRODUCTION TO TEXTILES", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 5.mp3" }
+            ]},
+            { id: 2, title: "Unit 02. Textile Fibres", description: "Learn about textile fibres", audioFiles: [
+                { id: 1, title: "01. Degree of Polymerization", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 1.mp3" },
+                { id: 2, title: "02. Cohesive Energy Density", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 2.mp3" },
+                { id: 3, title: "03. MOISTURE REGAIN AND MOISTURE CONTENT", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 3.mp3"},
+                { id: 4, title: "04. Classification of textile Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 4.mp3" },
+                { id: 5, title: "05. ESSENTIAL PROPERTIES OF FIBRE", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 5.mp3" },
+                { id: 6, title: "06. Desirable Properties of fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 6.mp3" },
+                { id: 7, title: "07. ORIENTATION", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 7.mp3" }
+            ]},
+            { id: 3, title: "Unit 03. Cotton Fibre", description: "All about cotton fibre", audioFiles: [
+                { id: 1, title: "01. CULTIVATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 1.mp3" },
+                { id: 2, title: "02. BOTANICAL CLASSIFICATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 2.mp3" },
+                { id: 3, title: "03. MORPHOLOGICAL STRUCTURE OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 3.mp3"},
+                { id: 4, title: "04. CHEMICAL COMPOSITION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 4.mp3" },
+                { id: 5, title: "05. Crystal structure of cellulose", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 5.mp3" },
+                { id: 6, title: "06. REACTIONS OF CELLULOSE", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 6.mp3" },
+                { id: 7, title: "07. Physical and chemical properties of Cotton", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 7.mp3" }
+            ] },
+            { id: 4, title: "Unit 04. Unconventional Natural Fibres", description: "Study of lesser-known fibres", audioFiles: [
+                { id: 1, title: "01. General Information About Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 1.mp3" },
+                { id: 2, title: "02. Chemical Composition of Jute Fibre.docx", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 2.mp3" },
+                { id: 3, title: "03. Cultivation of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 3.mp3"},
+                { id: 4, title: "04. Retting of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 4.mp3" },
+                { id: 5, title: "05. Morphological Structure of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 5.mp3" },
+                { id: 6, title: "06. Physical and Chemical Properties of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 6.mp3" },
+                { id: 7, title: "07. History of Flax Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 7.mp3" },
+                { id: 8, title: "08. Cultivation and Retting of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 8.mp3" },
+                { id: 9, title: "09. Physical and Chemical Properties of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 9.mp3" },
+            ] },
+            { id: 5, title: "Unit 05. Wool Fibre", description: "Detailed insights into wool fibre", audioFiles: [
+                { id: 1, title: "01. Grading of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 1.mp3" },
+                { id: 2, title: "02. Morphological Structure of wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 2.mp3" },
+                { id: 3, title: "03. Chemical Composition of wool fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 3.mp3"},
+                { id: 4, title: "04. Chemical Structure of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 4.mp3" },
+                { id: 5, title: "05. Different types of forces are present in wool fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 5.mp3" },
+                { id: 6, title: "06. Physical and Chemical Properties of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 6.mp3" }
+            ] },
+            { id: 6, title: "Unit 06. Silk Fibre", description: "Exploration of silk fibre chemistry", audioFiles: [
+                { id: 1, title: "01. Varieties of Silk Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 1.mp3" },
+                { id: 2, title: "02. Sericulture of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 2.mp3" },
+                { id: 3, title: "03. Production Of Raw Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 3.mp3"},
+                { id: 4, title: "04. Morphological Structure Of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 4.mp3" },
+                { id: 5, title: "05. Chemical composition and chemical structure of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 5.mp3" },
+                { id: 6, title: "06. Different types of forces are present in silk fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 6.mp3" },
+                { id: 7, title: "07. Physical and Chemical Properties of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 7.mp3" }
+            ] }
+            ]
+        };
+        const programsData = [
+            {
+                id: 1,
+                title: "Textile Chemistry",
+                color: "bg-gradient-to-br from-blue-500 to-blue-700",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>`,
+                subjects: [chemistryOfNaturalFibers]
+            },
+            // {
+            //     id: 2,
+            //     title: "Fabric Design",
+            //     color: "bg-gradient-to-br from-pink-500 to-pink-700",
+            //     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>`,
+            //     subjects: []
+            // },
+        ];
+       
+
+        // Current state variables
+        let currentProgram = null;
+        let currentSubject = null;
+        let currentChapter = null;
+
+        // DOM elements
+        const programsView = document.getElementById('programs-view');
+        const subjectsView = document.getElementById('subjects-view');
+        const chaptersView = document.getElementById('chapters-view');
+        const audioFilesView = document.getElementById('audio-files-view');
+        
+        const programBreadcrumb = document.getElementById('program-breadcrumb');
+        const subjectBreadcrumb = document.getElementById('subject-breadcrumb');
+        const chapterBreadcrumb = document.getElementById('chapter-breadcrumb');
+        
+        const programTitle = document.getElementById('program-title');
+        const subjectTitle = document.getElementById('subject-title');
+        const chapterTitle = document.getElementById('chapter-title');
+        
+        const subjectsContainer = document.getElementById('subjects-container');
+        const chaptersContainer = document.getElementById('chapters-container');
+        const audioFilesContainer = document.getElementById('audio-files-container');
+        
+        const backToPrograms = document.getElementById('back-to-programs');
+        const backToSubjects = document.getElementById('back-to-subjects');
+        const backToChapters = document.getElementById('back-to-chapters');
+
+        // Initialize the application
+        function init() {
+            renderPrograms();
+            setupEventListeners();
+        }
+
+        // Render programs
+        function renderPrograms() {
+            const programsContainer = document.querySelector('#programs-view .grid');
+            programsContainer.innerHTML = '';
+            
+            programsData.forEach(program => {
+                const programCard = document.createElement('button');
+                programCard.className = 'project-card fade-in group relative transition-all ease-in-out w-full';
+                programCard.type = 'button';
+                programCard.innerHTML = `
+                    <div class="project-card-inner">
+                        <div class="flex items-center justify-center w-16 h-16 rounded-[15px]">
+                            ${program.icon}
+                        </div>
+                        <div class="flex flex-col gap-1 text-start">
+                            <p class="text-base font-semibold max-w-[20ch] overflow-hidden">${program.title}</p>
+                            <p class="text-sm text-blue-500 max-w-[20ch] overflow-hidden whitespace-nowrap truncate">Click to explore Program</p>
+                        </div>
+                    </div>
+                    <div class="project-card-bg-1"></div>
+                    <div class="project-card-bg-2"></div>
+                `;
+                
+                programCard.addEventListener('click', function() {
+                    renderSubjects(program.id);
+                });
+                
+                programsContainer.appendChild(programCard);
+            });
+            
+            // Add intersection observer for fade-in effect
+            const elements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        function renderSubjects(programId) {
+            currentProgram = programsData.find(p => p.id === programId);
+            if (!currentProgram) return;
+            
+            programTitle.textContent = currentProgram.title;
+            programBreadcrumb.textContent = currentProgram.title;
+            programBreadcrumb.classList.remove('hidden');
+            
+            subjectsContainer.innerHTML = '';
+            
+            currentProgram.subjects.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'content-card fade-in group relative transition-all ease-in-out w-full';
+                subjectCard.innerHTML = `
+                    <div class="content-card-inner">
+                        <div class="content-card-content">
+                            <div class="flex items-center justify-center w-16 h-16 rounded-[15px] bg-purple-100 text-purple-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <p class="text-base font-semibold max-w-[20ch] overflow-hidden">${subject.title}</p>
+                                <p class="text-sm text-gray-600 max-w-[20ch] overflow-hidden">${subject.description}</p>
+                            </div>
+                        </div>
+                        <button class="explore-btn" data-subject-id="${subject.id}">
+                            <p class="text-sm text-blue-500 max-w-[20ch] overflow-hidden whitespace-nowrap truncate">Click to explore Subject</p>
+                        </button>
+                    </div>
+                    <div class="content-card-bg-1"></div>
+                    <div class="content-card-bg-2"></div>
+                `;
+                subjectsContainer.appendChild(subjectCard);
+            });
+            
+            // Add intersection observer
+            observeElements();
+            
+            programsView.classList.add('hidden');
+            subjectsView.classList.remove('hidden');
+            chaptersView.classList.add('hidden');
+            audioFilesView.classList.add('hidden');
+        }
+
+        // Updated renderChapters function
+        function renderChapters(subjectId) {
+            currentSubject = currentProgram.subjects.find(s => s.id === subjectId);
+            if (!currentSubject) return;
+            
+            subjectTitle.textContent = currentSubject.title;
+            subjectBreadcrumb.textContent = currentSubject.title;
+            subjectBreadcrumb.classList.remove('hidden');
+            
+            chaptersContainer.innerHTML = '';
+            
+            currentSubject.chapters.forEach(chapter => {
+                const chapterCard = document.createElement('div');
+                chapterCard.className = 'content-card fade-in group relative transition-all ease-in-out w-full';
+                chapterCard.innerHTML = `
+                    <div class="content-card-inner">
+                        <div class="content-card-content">
+                            <div class="flex items-center justify-center w-16 h-16 rounded-[15px] bg-blue-100 text-blue-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                                </svg>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <p class="text-base font-semibold max-w-[20ch] overflow-hidden">${chapter.title}</p>
+                                <p class="text-sm text-gray-600 max-w-[20ch] overflow-hidden">${chapter.description}</p>
+                            </div>
+                        </div>
+                        <button class="explore-btn" data-chapter-id="${chapter.id}">
+                            <p class="text-sm text-blue-500 max-w-[20ch] overflow-hidden whitespace-nowrap truncate">Click to Listen Now</p>
+                        </button>
+                    </div>
+                    <div class="content-card-bg-1"></div>
+                    <div class="content-card-bg-2"></div>
+                `;
+                chaptersContainer.appendChild(chapterCard);
+            });
+            
+            // Add intersection observer
+            observeElements();
+            
+            programsView.classList.add('hidden');
+            subjectsView.classList.add('hidden');
+            chaptersView.classList.remove('hidden');
+            audioFilesView.classList.add('hidden');
+        }
+
+        // Updated renderAudioFiles function
+        function renderAudioFiles(chapterId) {
+            currentChapter = currentSubject.chapters.find(c => c.id === chapterId);
+            if (!currentChapter) return;
+            
+            chapterTitle.textContent = currentChapter.title;
+            chapterBreadcrumb.textContent = currentChapter.title;
+            chapterBreadcrumb.classList.remove('hidden');
+            
+            audioFilesContainer.innerHTML = '';
+            
+            currentChapter.audioFiles.forEach(audioFile => {
+                const audioCard = document.createElement('div');
+                audioCard.className = 'content-card fade-in group relative transition-all ease-in-out w-full mb-6';
+                audioCard.innerHTML = `
+                    <div class="content-card-inner flex-col">
+                        <div class="flex items-start gap-4 w-full">
+                           
+                            <div class="flex flex-col flex-grow">
+                                <h3 class="text-lg font-semibold text-gray-800">${audioFile.title}</h3>
+                                <div class="audio-player mt-3">
+                                    <div class="audio-controls">
+                                        <button class="play-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <div class="progress-container">
+                                            <div class="progress-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="time-display">
+                                        <span class="current-time">0:00</span>
+                                        <span class="duration">0:00</span>
+                                    </div>
+                                    <div class="volume-control">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                                        </svg>
+                                        <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                                    </div>
+                                    <audio src="${audioFile.filePath}" preload="metadata"></audio>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card-bg-1"></div>
+                    <div class="content-card-bg-2"></div>
+                `;
+                audioFilesContainer.appendChild(audioCard);
+            });
+            
+            // Initialize audio players
+            initAudioPlayers();
+            
+            observeElements();
+            
+            programsView.classList.add('hidden');
+            subjectsView.classList.add('hidden');
+            chaptersView.classList.add('hidden');
+            audioFilesView.classList.remove('hidden');
+        }
+
+        // Helper function for intersection observer
+        function observeElements() {
+            const elements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            elements.forEach(el => observer.observe(el));
+        }
+
+        function initAudioPlayers() {
+            document.querySelectorAll('.audio-player').forEach(player => {
+                const audio = player.querySelector('audio');
+                const playBtn = player.querySelector('.play-btn');
+                const progressBar = player.querySelector('.progress-bar');
+                const progressContainer = player.querySelector('.progress-container');
+                const currentTimeEl = player.querySelector('.current-time');
+                const durationEl = player.querySelector('.duration');
+                const volumeSlider = player.querySelector('.volume-slider');
+                
+                // Play/Pause
+                playBtn.addEventListener('click', () => {
+                    if (audio.paused) {
+                        audio.play();
+                        playBtn.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        `;
+                    } else {
+                        audio.pause();
+                        playBtn.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                        `;
+                    }
+                });
+                
+                // Time update
+                audio.addEventListener('timeupdate', () => {
+                    const currentTime = audio.currentTime;
+                    const duration = audio.duration;
+                    const progressPercent = (currentTime / duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                    
+                    // Format time
+                    currentTimeEl.textContent = formatTime(currentTime);
+                    if (duration) {
+                        durationEl.textContent = formatTime(duration);
+                    }
+                });
+                
+                // Click on progress bar
+                progressContainer.addEventListener('click', (e) => {
+                    const width = progressContainer.clientWidth;
+                    const clickX = e.offsetX;
+                    const duration = audio.duration;
+                    audio.currentTime = (clickX / width) * duration;
+                });
+                
+                // Volume control
+                volumeSlider.addEventListener('input', (e) => {
+                    audio.volume = e.target.value;
+                });
+                
+                // When audio ends
+                audio.addEventListener('ended', () => {
+                    playBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                        </svg>
+                    `;
+                    progressBar.style.width = '0%';
+                    currentTimeEl.textContent = '0:00';
+                });
+            });
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+        // Set up event listeners
+        function setupEventListeners() {
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.explore-btn[data-program-id]')) {
+                    const programId = parseInt(e.target.closest('.explore-btn').dataset.programId);
+                    renderSubjects(programId);
+                }
+                else if (e.target.closest('.explore-btn[data-subject-id]')) {
+                    const subjectId = parseInt(e.target.closest('.explore-btn').dataset.subjectId);
+                    renderChapters(subjectId);
+                }
+                else if (e.target.closest('.explore-btn[data-chapter-id]')) {
+                    const chapterId = parseInt(e.target.closest('.explore-btn').dataset.chapterId);
+                    renderAudioFiles(chapterId);
+                }
+            });
+            // Program selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-program')) {
+                    const programId = parseInt(e.target.closest('.view-program').dataset.programId);
+                    renderSubjects(programId);
+                }
+            });
+            
+            // Subject selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-subject')) {
+                    const subjectId = parseInt(e.target.closest('.view-subject').dataset.subjectId);
+                    renderChapters(subjectId);
+                }
+            });
+            
+            // Chapter selection
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-chapter')) {
+                    const chapterId = parseInt(e.target.closest('.view-chapter').dataset.chapterId);
+                    renderAudioFiles(chapterId);
+                }
+            });
+            
+            // Audio player controls
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.play-btn')) {
+                    const audioId = parseInt(e.target.closest('.play-btn').dataset.audioId);
+                    togglePlayPause(e.target.closest('.play-btn'), audioId);
+                }
+            });
+            
+            // Navigation back buttons
+            backToPrograms.addEventListener('click', function() {
+                programsView.classList.remove('hidden');
+                subjectsView.classList.add('hidden');
+                programBreadcrumb.classList.add('hidden');
+                subjectBreadcrumb.classList.add('hidden');
+                chapterBreadcrumb.classList.add('hidden');
+                currentProgram = null;
+            });
+            
+            backToSubjects.addEventListener('click', function() {
+                subjectsView.classList.remove('hidden');
+                chaptersView.classList.add('hidden');
+                subjectBreadcrumb.classList.add('hidden');
+                chapterBreadcrumb.classList.add('hidden');
+                currentSubject = null;
+            });
+            
+            backToChapters.addEventListener('click', function() {
+                chaptersView.classList.remove('hidden');
+                audioFilesView.classList.add('hidden');
+                chapterBreadcrumb.classList.add('hidden');
+                currentChapter = null;
+            });
+            
+            // Breadcrumb navigation
+            document.getElementById('breadcrumb').addEventListener('click', function(e) {
+                if (e.target.textContent === 'Home') {
+                    programsView.classList.remove('hidden');
+                    subjectsView.classList.add('hidden');
+                    chaptersView.classList.add('hidden');
+                    audioFilesView.classList.add('hidden');
+                    programBreadcrumb.classList.add('hidden');
+                    subjectBreadcrumb.classList.add('hidden');
+                    chapterBreadcrumb.classList.add('hidden');
+                    currentProgram = null;
+                    currentSubject = null;
+                    currentChapter = null;
+                } else if (e.target === programBreadcrumb) {
+                    subjectsView.classList.remove('hidden');
+                    chaptersView.classList.add('hidden');
+                    audioFilesView.classList.add('hidden');
+                    subjectBreadcrumb.classList.add('hidden');
+                    chapterBreadcrumb.classList.add('hidden');
+                    currentSubject = null;
+                    currentChapter = null;
+                } else if (e.target === subjectBreadcrumb) {
+                    chaptersView.classList.remove('hidden');
+                    audioFilesView.classList.add('hidden');
+                    chapterBreadcrumb.classList.add('hidden');
+                    currentChapter = null;
+                }
+            });
+        }
+
+        // Toggle play/pause for audio
+        function togglePlayPause(button, audioId) {
+            const isPlaying = button.classList.contains('playing');
+            
+            // Reset all buttons to play state
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.classList.remove('playing');
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `;
+            });
+            
+            // Reset all progress bars
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                bar.value = 0;
+            });
+            
+            if (!isPlaying) {
+                // Set this button to pause state
+                button.classList.add('playing');
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `;
+                
+                // Simulate audio progress
+                simulateAudioProgress(button.closest('.audio-player').querySelector('.progress-bar'), audioId);
+            }
+        }
+
+        // Simulate audio progress
+        function simulateAudioProgress(progressBar, audioId) {
+            let progress = 0;
+            const audioFile = currentChapter.audioFiles.find(a => a.id === audioId);
+            const timeDisplay = document.querySelector(`.audio-time-${audioId}`);
+            
+            // Parse duration
+            const durationParts = audioFile.duration.split(':');
+            const totalSeconds = parseInt(durationParts[0]) * 60 + parseInt(durationParts[1]);
+            
+            const interval = setInterval(() => {
+                if (progress >= 100 || !document.querySelector('.play-btn.playing')) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                progress += 0.5;
+                progressBar.value = progress;
+                
+                // Update time display
+                const currentSeconds = Math.floor((progress / 100) * totalSeconds);
+                const minutes = Math.floor(currentSeconds / 60);
+                const seconds = currentSeconds % 60;
+                timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')} / ${audioFile.duration}`;
+                
+            }, 500);
+        }
+
+        init();
+    </script>
+    <script>
+        (function(){
+            function c(){
+                var b=a.contentDocument||a.contentWindow.document;
+                if(b){
+                    var d=b.createElement('script');
+                    d.innerHTML="window.__CF$cv$params={r:'946c8857613547c3',t:'MTc0ODQyMjUyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+                    b.getElementsByTagName('head')[0].appendChild(d)
+                }
+            }
+            if(document.body){
+                var a=document.createElement('iframe');
+                a.height=1;
+                a.width=1;
+                a.style.position='absolute';
+                a.style.top=0;
+                a.style.left=0;
+                a.style.border='none';
+                a.style.visibility='hidden';
+                document.body.appendChild(a);
+                if('loading'!==document.readyState)c();
+                else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);
+                else{var e=document.onreadystatechange||function(){};
+                    document.onreadystatechange=function(b){e(b);
+                        'loading'!==document.readyState&&(document.onreadystatechange=e,c())
+                    }
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
