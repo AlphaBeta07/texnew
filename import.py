@@ -3,8 +3,8 @@ import pyttsx3
 import docx
 
 # === Folder containing Word files ===
-input_folder = r"D:\\TextileGuru\\word"
-output_folder = "audio_files"
+input_folder = r"D:\\TextileGuru\\audio\\Textile Chemistry\\subject 2\\chapter 2"
+output_folder = "D:\\TextileGuru\\audio\\Textile Chemistry\\subject 2\\chapter 2\\audio_files"
 
 # Create output folder if not exists
 os.makedirs(output_folder, exist_ok=True)
