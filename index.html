@@ -1,290 +1,737 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TextileGuru</title>
+    <title>TextileGuru - Premium Education</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            900: '#4c1d95',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 20px rgba(124, 58, 237, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E98Q0BFYM0"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-E98Q0BFYM0');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-E98Q0BFYM0');
     </script>
+    <script>
+        // Check local storage for theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f5ff;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-        .program-card {
-            transition: all 0.3s ease;
+
+        .view-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.4s ease forwards;
         }
-        .program-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+        .view-section.active {
+            display: block;
         }
-        .audio-player {
-            background: linear-gradient(145deg, #f0e6ff, #ffffff);
-            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .audio-player:hover {
-            box-shadow: 0 6px 20px rgba(107, 70, 193, 0.15);
+
+        audio {
+            display: none;
         }
-        .play-btn {
-            transition: all 0.2s ease;
-        }
-        .play-btn:hover {
-            transform: scale(1.1);
-        }
-        .progress-bar {
-            height: 6px;
+
+        /* Custom Range Slider Spotify Style */
+        .progress-dark {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            background: transparent;
+            height: 4px;
+            border-radius: 2px;
             cursor: pointer;
+            background: linear-gradient(#b6e3d4, #b6e3d4) no-repeat rgba(255, 255, 255, 0.2);
+            background-size: 0% 100%;
         }
-        .progress-bar::-webkit-progress-bar {
-            background-color: #e0d5f5;
-            border-radius: 3px;
+
+        .progress-dark:focus {
+            outline: none;
         }
-        .progress-bar::-webkit-progress-value {
-            background: linear-gradient(90deg, #6b46c1, #9f7aea);
-            border-radius: 3px;
+
+        .progress-dark::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: transparent;
+            border-radius: 2px;
         }
-        .breadcrumb-item::after {
-            content: '/';
-            margin: 0 8px;
-            color: #9f7aea;
+
+        .progress-dark::-webkit-slider-thumb {
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #b6e3d4;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.2s;
         }
-        .breadcrumb-item:last-child::after {
-            content: '';
-            margin: 0;
+
+        .progress-dark:hover::-webkit-slider-thumb {
+            opacity: 1;
+        }
+
+        .progress-dark::-moz-range-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: transparent;
+            border-radius: 2px;
+        }
+
+        .progress-dark::-moz-range-thumb {
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #b6e3d4;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .progress-dark:hover::-moz-range-thumb {
+            opacity: 1;
+        }
+
+        .glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+            backdrop-filter: saturate(200%) blur(24px);
+            -webkit-backdrop-filter: saturate(200%) blur(24px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Continuous Title Marquee Animation */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            15% {
+                transform: translateX(0);
+            }
+
+            /* Brief pause at the start */
+            100% {
+                transform: translateX(calc(-50% - 1.25rem));
+                /* Offset padded margin */
+            }
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+            mask-image: linear-gradient(to right, black 80%, transparent 100%);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            /* Scroll infinitely but seamlessly */
+            animation: scroll-left 12s linear infinite;
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        .hero-pattern {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.15) 1px, transparent 0);
+            background-size: 32px 32px;
+        }
+
+        /* --- Global Dark Mode Overrides --- */
+        body {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .dark body {
+            background-color: #0f172a;
+        }
+
+        .dark .bg-white {
+            background-color: #1e293b !important;
+        }
+
+        .dark .border-slate-100 {
+            border-color: #334155 !important;
+        }
+
+        .dark .border-slate-200 {
+            border-color: #475569 !important;
+        }
+
+        .dark .text-slate-800 {
+            color: #f8fafc !important;
+        }
+
+        .dark .text-slate-900 {
+            color: #ffffff !important;
+        }
+
+        .dark .text-slate-600 {
+            color: #cbd5e1 !important;
+        }
+
+        .dark .text-slate-500 {
+            color: #94a3b8 !important;
+        }
+
+        .dark .bg-slate-50 {
+            background-color: #334155 !important;
+        }
+
+        .dark .bg-slate-100 {
+            background-color: #475569 !important;
+        }
+
+        .dark .bg-primary-50 {
+            background-color: rgba(30, 58, 138, 0.4) !important;
+            color: #60a5fa !important;
+        }
+
+        .dark .text-primary-600 {
+            color: #60a5fa !important;
+        }
+
+        .dark .bg-secondary-50 {
+            background-color: rgba(91, 33, 182, 0.4) !important;
+            color: #a78bfa !important;
+        }
+
+        .dark .text-secondary-600 {
+            color: #a78bfa !important;
+        }
+
+        .dark .bg-blue-50 {
+            background-color: rgba(30, 58, 138, 0.6) !important;
+        }
+
+        /* Dark mode navbar glass override */
+        .dark .glass {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.6)) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .dark .view-section.active .bg-slate-900 {
+            /* Keep hero section pristine in dark mode but tweak contrast */
+            background-color: #0b1120 !important;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
-<body>
-    <div class="min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="bg-gradient-to-r from-purple-800 to-purple-600 text-white shadow-lg">
-            <div class="container mx-auto px-4 py-6">
+
+<body class="min-h-screen flex flex-col antialiased selection:bg-secondary-200 selection:text-secondary-900">
+
+    <!-- Navbar -->
+    <div class="sticky top-4 z-50 px-4 sm:px-6 w-full max-w-7xl mx-auto flex justify-center">
+        <header
+            class="w-full glass rounded-[2rem] transition-all duration-500 border border-white/60 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-hidden relative group hover:shadow-[0_16px_40px_rgba(30,58,138,0.12)]">
+            <div
+                class="absolute inset-0 bg-gradient-to-tr from-white/70 via-transparent to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+            </div>
+            <div
+                class="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 z-20 pointer-events-none">
+            </div>
+            <div class="container mx-auto px-6 py-3.5 relative z-10 transition-transform duration-500">
                 <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                        <h1 class="text-2xl font-bold">TextileGuru</h1>
+                    <div class="flex items-center space-x-3 cursor-pointer transform transition-transform group-hover:scale-[1.02]"
+                        onclick="navigateHome()">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-tr from-secondary-600 to-primary-500 flex items-center justify-center text-white shadow-lg shadow-secondary-200/50">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold font-outfit text-slate-800 tracking-tight">Textile<span
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-primary-600">Guru</span>
+                            </h1>
+                        </div>
                     </div>
-                    <button class="md:hidden focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+
+                    <!-- Theme Toggle Switch -->
+                    <button onclick="toggleTheme()"
+                        class="relative p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors focus:outline-none overflow-hidden group ml-4 outline-none border border-transparent dark:border-white/10 dark:bg-slate-800 shadow-sm">
+                        <!-- Sun Icon (shows in light mode) -->
+                        <svg class="w-[22px] h-[22px] text-amber-500 block dark:hidden transform transition-transform group-hover:rotate-45"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                        </svg>
+                        <!-- Moon Icon (shows in dark mode) -->
+                        <svg class="w-[22px] h-[22px] text-blue-200 hidden dark:block transform transition-transform group-hover:-rotate-12"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+                                clip-rule="evenodd" />
                         </svg>
                     </button>
                 </div>
             </div>
         </header>
-
-        <!-- Main Content -->
-        <main class="flex-grow container mx-auto px-4 py-8">
-            
-            <div id="breadcrumb" class="flex flex-wrap text-sm text-purple-700 mb-6">
-                <span class="breadcrumb-item">Home</span>
-                <span id="program-breadcrumb" class="breadcrumb-item hidden">Program</span>
-                <span id="subject-breadcrumb" class="breadcrumb-item hidden">Subject</span>
-                <span id="chapter-breadcrumb" class="breadcrumb-item hidden">Chapter</span>
-            </div>
-
-            <!-- Programs View -->
-            <div id="programs-view">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8">Textile Education Programs</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Program cards will be generated here -->
-                </div>
-            </div>
-
-            <!-- Subjects View -->
-            <div id="subjects-view" class="hidden">
-                <h2 id="program-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
-                <p class="text-gray-600 mb-8">Select a subject to explore chapters and learning materials.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-container">
-                    <!-- Subject cards will be generated here -->
-                </div>
-                <button id="back-to-programs" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Back to Programs
-                </button>
-            </div>
-
-            <!-- Chapters View -->
-            <div id="chapters-view" class="hidden">
-                <h2 id="subject-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
-                <p class="text-gray-600 mb-8">Select a chapter to access audio lessons.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="chapters-container">
-                    <!-- Chapter cards will be generated here -->
-                </div>
-                <button id="back-to-subjects" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Back to Subjects
-                </button>
-            </div>
-
-            <!-- Audio Files View -->
-            <div id="audio-files-view" class="hidden">
-                <h2 id="chapter-title" class="text-3xl font-bold text-gray-800 mb-2"></h2>
-                <p class="text-gray-600 mb-8">Listen to the audio lessons for this chapter.</p>
-                
-                <div id="audio-files-container" class="space-y-6">
-                    <!-- Audio players will be generated here -->
-                </div>
-                
-                <button id="back-to-chapters" class="mt-8 flex items-center text-purple-700 hover:text-purple-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Back to Chapters
-                </button>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-purple-900 text-white py-8">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4">TextileGuru</h3>
-                        <p class="text-purple-200">Dr. Sachin M. Landage. <br>
-                        Dept. of Textiles<br> D.K.T.E. Society's, Textile & Engineering Institute, Ichalkaranji, Maharashtra, India.</p>
-                        <br>Email - <a href="smlandage@dkte.ac.in" className="text-gray-500 hover:text-primary transition">smlandage@dkte.ac.in</a>
-                    </div>
-                </div>
-                <div class="border-t border-purple-800 mt-8 pt-6 text-center text-purple-300">
-                    <p>&copy; 2025 TextileGuru. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
     </div>
 
+    <main class="flex-grow container mx-auto px-4 sm:px-6 py-8 md:py-12 max-w-7xl">
+
+        <!-- Breadcrumb Navigation -->
+        <nav id="breadcrumb-nav" class="hidden mb-8">
+            <div
+                class="inline-flex items-center px-5 py-2.5 bg-white dark:bg-slate-800/80 rounded-full border border-slate-200 dark:border-white/5 shadow-sm text-[13px] font-semibold text-slate-600 dark:text-slate-300 flex-wrap gap-y-2 backdrop-blur-md">
+                <button onclick="navigateHome()"
+                    class="hover:text-primary-600 dark:hover:text-primary-400 flex items-center transition-colors">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Home
+                </button>
+                <div class="mx-2.5 text-slate-300 dark:text-slate-600">/</div>
+                <button id="bc-program"
+                    class="hidden hover:text-primary-600 dark:hover:text-primary-400 transition-colors truncate max-w-[200px] sm:max-w-xs"></button>
+                <div id="div-subject" class="hidden mx-2.5 text-slate-300 dark:text-slate-600">/</div>
+                <button id="bc-subject"
+                    class="hidden hover:text-primary-600 dark:hover:text-primary-400 transition-colors truncate max-w-[200px] sm:max-w-xs"></button>
+                <div id="div-chapter" class="hidden mx-2.5 text-slate-300 dark:text-slate-600">/</div>
+                <span id="bc-chapter"
+                    class="hidden text-slate-900 dark:text-white font-bold truncate max-w-[200px] sm:max-w-xs"></span>
+            </div>
+        </nav>
+
+        <!-- Programs View -->
+        <div id="programs-view" class="view-section active">
+            <div
+                class="relative overflow-hidden bg-slate-900 dark:bg-[#070b14] rounded-[2.5rem] p-10 md:p-16 lg:p-20 mb-16 shadow-2xl border border-transparent dark:border-white/5">
+                <div class="absolute inset-0 hero-pattern opacity-10"></div>
+                <div
+                    class="absolute top-0 right-0 -mr-32 -mt-32 w-[30rem] h-[30rem] rounded-full bg-blue-600/30 blur-[100px] opacity-60">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 -ml-32 -mb-32 w-[30rem] h-[30rem] rounded-full bg-indigo-600/30 blur-[100px] opacity-60">
+                </div>
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-t from-slate-900/80 to-transparent z-0">
+                </div>
+
+                <div class="relative z-10 max-w-3xl">
+                    <!-- <div
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-white font-semibold text-xs tracking-widest uppercase mb-8">
+                        <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                        Premium Education
+                    </div> -->
+                    <h2
+                        class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 font-outfit leading-[1.1]">
+                        Master the Science of <br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">Textile
+                            Materials</span>
+                    </h2>
+                    <p
+                        class="text-slate-300 dark:text-slate-400 text-lg md:text-xl md:leading-relaxed mb-10 max-w-2xl font-light">
+                        Explore comprehensive audio lectures, curated study materials, and expert insights designed
+                        by leading academicians for an immersive learning experience.
+                    </p>
+                    <button onclick="document.getElementById('programs-grid').scrollIntoView({behavior: 'smooth'})"
+                        class="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-full font-bold transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.25)] transform hover:-translate-y-1 flex items-center gap-3 text-lg">
+                        Start Learning
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="programs-grid">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl md:text-3xl font-bold font-outfit text-slate-800">Academic Programs</h3>
+                    <div class="h-1 flex-grow ml-6 bg-slate-100 rounded-full"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="programs-container">
+                    <!-- Cards injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Subjects View -->
+        <div id="subjects-view" class="view-section">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 border border-slate-100 dark:border-white/5 shadow-sm mb-12 overflow-hidden relative backdrop-blur-md">
+                <div
+                    class="absolute right-0 top-0 w-[400px] h-[400px] bg-indigo-50/50 dark:bg-indigo-900/20 rounded-full blur-[80px] -mr-20 -mt-20 opacity-60 pointer-events-none">
+                </div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="max-w-2xl">
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold tracking-wide text-[11px] uppercase mb-4 border border-indigo-100 dark:border-indigo-800/50">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                            Program Overview
+                        </span>
+                        <h2 id="program-title"
+                            class="text-4xl md:text-5xl font-extrabold font-outfit text-slate-900 dark:text-white mb-4 tracking-tight leading-tight">
+                        </h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed font-medium">Select a
+                            specialized subject to access detailed chapters, study resources, and master the curriculum.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-container"></div>
+        </div>
+
+        <!-- Chapters View -->
+        <div id="chapters-view" class="view-section">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-white/5 shadow-sm mb-10 relative overflow-hidden backdrop-blur-md">
+                <div
+                    class="absolute left-0 top-0 w-[400px] h-[400px] bg-blue-50/50 dark:bg-blue-900/10 rounded-full blur-[80px] -ml-20 -mt-20 opacity-80 pointer-events-none">
+                </div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold tracking-wide text-[11px] uppercase mb-4 border border-blue-100 dark:border-blue-800/50">
+                            Curriculum Modules
+                        </span>
+                        <h2 id="subject-title"
+                            class="text-3xl md:text-4xl font-extrabold font-outfit text-slate-900 dark:text-white tracking-tight">
+                        </h2>
+                    </div>
+                    <button onclick="navigateUp('subject')"
+                        class="flex-shrink-0 px-6 py-3 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900/50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 font-bold text-sm tracking-wide rounded-full transition-colors flex items-center gap-2 border border-slate-200 dark:border-white/5">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to Subjects
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="chapters-container"></div>
+        </div>
+
+        <!-- Audio Files View -->
+        <div id="audio-files-view" class="view-section">
+            <div
+                class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-10 mb-8 shadow-xl text-white relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50">
+                </div>
+                <div class="relative z-10">
+                    <div class="flex flex-wrap items-center gap-4 mb-6">
+                        <button onclick="navigateUp('chapter')"
+                            class="p-2.5 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors cursor-pointer text-white">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+                        <span class="text-slate-300 font-medium uppercase tracking-wider text-sm">Audio
+                            Lessons</span>
+                    </div>
+                    <h2 id="chapter-title" class="text-3xl md:text-4xl font-bold font-outfit mb-4"></h2>
+                    <p class="text-slate-300 text-lg font-light max-w-2xl">Immerse yourself in high-quality audio
+                        lectures designed for comprehensive understanding.</p>
+                </div>
+            </div>
+
+            <div
+                class="bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-white/5 shadow-sm p-6 md:p-8 backdrop-blur-sm">
+                <div class="flex items-center justify-between mb-8 border-b border-slate-100 dark:border-white/5 pb-5">
+                    <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white font-outfit tracking-tight">
+                        Tracklist</h3>
+                    <div
+                        class="text-xs font-bold font-outfit tracking-wide text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 px-4 py-1.5 rounded-full">
+                        <span id="audio-count">0</span> Tracks
+                    </div>
+                </div>
+                <div id="audio-files-container" class="space-y-4"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-[#070b14] border-t border-slate-200 dark:border-white/5 mt-auto">
+        <div class="container mx-auto px-6 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-gradient-to-tr from-secondary-600 to-primary-500 flex items-center justify-center text-white">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold font-outfit text-slate-800 dark:text-white">Textile<span
+                                class="text-secondary-600 dark:text-primary-400">Guru</span></h3>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">Dr. Sachin M. Landage.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Dept. of Textiles, D.K.T.E. Society's,
+                        <br />Textile &
+                        Engineering Institute, Ichalkaranji, Maharashtra.</p>
+                </div>
+
+                <div class="text-center md:text-right">
+                    <a href="mailto:smlandage@dkte.ac.in"
+                        class="inline-flex items-center justify-center space-x-2 bg-slate-50 dark:bg-slate-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/30 text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-6 py-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-primary-200 dark:hover:border-primary-800 font-medium shadow-sm">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>smlandage@dkte.ac.in</span>
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-slate-100 dark:border-white/5 mt-10 pt-8 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-400 text-sm">&copy; 2025 TextileGuru. Advancing Textile Education.</p>
+                <div class="flex space-x-4 text-slate-400">
+                    <span
+                        class="text-sm border border-slate-200 dark:border-white/10 px-3 py-1 rounded-full bg-slate-50/50 dark:bg-slate-800/30">Made
+                        by Anish
+                        Landage</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Data structure for programs, subjects, chapters, and audio files
         const chemistryOfNaturalFibers = {
-        id: 99, 
-        title: "Chemistry of Natural Fibers",
-        description: "Detailed study of the chemistry involved in natural textile fibers.",
-        chapters: [
-            { id: 1, title: "Unit 01. Introduction to Textiles", description: "Introduction to textiles", audioFiles: [
-                { id: 1, title: "FLOW CHART OF YARN MANUFACTURING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 1.mp3" },
-                { id: 2, title: "FLOW CHART OF WEAVING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 2.mp3" },
-                { id: 3, title: "FLOW CHART OF CHEMICAL PROCESSING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 3.mp3"},
-                { id: 4, title: "FLOW CHART OF GARMENT MANUFACTURING PROCESS", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 4.mp3" },
-                { id: 5, title: "INTRODUCTION TO TEXTILES", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 5.mp3" }
-            ]},
-            { id: 2, title: "Unit 02. Textile Fibres", description: "Learn about textile fibres", audioFiles: [
-                { id: 1, title: "01. Degree of Polymerization", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 1.mp3" },
-                { id: 2, title: "02. Cohesive Energy Density", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 2.mp3" },
-                { id: 3, title: "03. MOISTURE REGAIN AND MOISTURE CONTENT", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 3.mp3"},
-                { id: 4, title: "04. Classification of textile Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 4.mp3" },
-                { id: 5, title: "05. ESSENTIAL PROPERTIES OF FIBRE", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 5.mp3" },
-                { id: 6, title: "06. Desirable Properties of fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 6.mp3" },
-                { id: 7, title: "07. ORIENTATION", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 7.mp3" }
-            ]},
-            { id: 3, title: "Unit 03. Cotton Fibre", description: "All about cotton fibre", audioFiles: [
-                { id: 1, title: "01. CULTIVATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 1.mp3" },
-                { id: 2, title: "02. BOTANICAL CLASSIFICATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 2.mp3" },
-                { id: 3, title: "03. MORPHOLOGICAL STRUCTURE OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 3.mp3"},
-                { id: 4, title: "04. CHEMICAL COMPOSITION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 4.mp3" },
-                { id: 5, title: "05. Crystal structure of cellulose", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 5.mp3" },
-                { id: 6, title: "06. REACTIONS OF CELLULOSE", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 6.mp3" },
-                { id: 7, title: "07. Physical and chemical properties of Cotton", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 7.mp3" }
-            ] },
-            { id: 4, title: "Unit 04. Unconventional Natural Fibres", description: "Study of lesser-known fibres", audioFiles: [
-                { id: 1, title: "01. General Information About Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 1.mp3" },
-                { id: 2, title: "02. Chemical Composition of Jute Fibre.docx", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 2.mp3" },
-                { id: 3, title: "03. Cultivation of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 3.mp3"},
-                { id: 4, title: "04. Retting of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 4.mp3" },
-                { id: 5, title: "05. Morphological Structure of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 5.mp3" },
-                { id: 6, title: "06. Physical and Chemical Properties of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 6.mp3" },
-                { id: 7, title: "07. History of Flax Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 7.mp3" },
-                { id: 8, title: "08. Cultivation and Retting of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 8.mp3" },
-                { id: 9, title: "09. Physical and Chemical Properties of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 9.mp3" },
-            ] },
-            { id: 5, title: "Unit 05. Wool Fibre", description: "Detailed insights into wool fibre", audioFiles: [
-                { id: 1, title: "01. Grading of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 1.mp3" },
-                { id: 2, title: "02. Morphological Structure of wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 2.mp3" },
-                { id: 3, title: "03. Chemical Composition of wool fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 3.mp3"},
-                { id: 4, title: "04. Chemical Structure of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 4.mp3" },
-                { id: 5, title: "05. Different types of forces are present in wool fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 5.mp3" },
-                { id: 6, title: "06. Physical and Chemical Properties of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 6.mp3" }
-            ] },
-            { id: 6, title: "Unit 06. Silk Fibre", description: "Exploration of silk fibre chemistry", audioFiles: [
-                { id: 1, title: "01. Varieties of Silk Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 1.mp3" },
-                { id: 2, title: "02. Sericulture of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 2.mp3" },
-                { id: 3, title: "03. Production Of Raw Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 3.mp3"},
-                { id: 4, title: "04. Morphological Structure Of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 4.mp3" },
-                { id: 5, title: "05. Chemical composition and chemical structure of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 5.mp3" },
-                { id: 6, title: "06. Different types of forces are present in silk fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 6.mp3" },
-                { id: 7, title: "07. Physical and Chemical Properties of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 7.mp3" }
-            ] }
+            id: 99,
+            title: "Chemistry of Natural Fibers",
+            description: "Detailed study of the chemistry involved in natural textile fibers.",
+            chapters: [
+                {
+                    id: 1, title: "Unit 01. Introduction to Textiles", description: "Introduction to textiles", audioFiles: [
+                        { id: 1, title: "FLOW CHART OF YARN MANUFACTURING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 1.mp3" },
+                        { id: 2, title: "FLOW CHART OF WEAVING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 2.mp3" },
+                        { id: 3, title: "FLOW CHART OF CHEMICAL PROCESSING", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 3.mp3" },
+                        { id: 4, title: "FLOW CHART OF GARMENT MANUFACTURING PROCESS", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 4.mp3" },
+                        { id: 5, title: "INTRODUCTION TO TEXTILES", filePath: "audio/Textile Chemistry/subject 1/chapter 1/lession 5.mp3" }
+                    ]
+                },
+                {
+                    id: 2, title: "Unit 02. Textile Fibres", description: "Learn about textile fibres", audioFiles: [
+                        { id: 1, title: "01. Degree of Polymerization", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 1.mp3" },
+                        { id: 2, title: "02. Cohesive Energy Density", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 2.mp3" },
+                        { id: 3, title: "03. MOISTURE REGAIN AND MOISTURE CONTENT", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 3.mp3" },
+                        { id: 4, title: "04. Classification of textile Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 4.mp3" },
+                        { id: 5, title: "05. ESSENTIAL PROPERTIES OF FIBRE", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 5.mp3" },
+                        { id: 6, title: "06. Desirable Properties of fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 6.mp3" },
+                        { id: 7, title: "07. ORIENTATION", filePath: "audio/Textile Chemistry/subject 1/chapter 2/lession 7.mp3" }
+                    ]
+                },
+                {
+                    id: 3, title: "Unit 03. Cotton Fibre", description: "All about cotton fibre", audioFiles: [
+                        { id: 1, title: "01. CULTIVATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 1.mp3" },
+                        { id: 2, title: "02. BOTANICAL CLASSIFICATION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 2.mp3" },
+                        { id: 3, title: "03. MORPHOLOGICAL STRUCTURE OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 3.mp3" },
+                        { id: 4, title: "04. CHEMICAL COMPOSITION OF COTTON", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 4.mp3" },
+                        { id: 5, title: "05. Crystal structure of cellulose", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 5.mp3" },
+                        { id: 6, title: "06. REACTIONS OF CELLULOSE", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 6.mp3" },
+                        { id: 7, title: "07. Physical and chemical properties of Cotton", filePath: "audio/Textile Chemistry/subject 1/chapter 3/lession 7.mp3" }
+                    ]
+                },
+                {
+                    id: 4, title: "Unit 04. Unconventional Natural Fibres", description: "Study of lesser-known fibres", audioFiles: [
+                        { id: 1, title: "01. General Information About Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 1.mp3" },
+                        { id: 2, title: "02. Chemical Composition of Jute Fibre.docx", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 2.mp3" },
+                        { id: 3, title: "03. Cultivation of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 3.mp3" },
+                        { id: 4, title: "04. Retting of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 4.mp3" },
+                        { id: 5, title: "05. Morphological Structure of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 5.mp3" },
+                        { id: 6, title: "06. Physical and Chemical Properties of Jute Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 6.mp3" },
+                        { id: 7, title: "07. History of Flax Fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 7.mp3" },
+                        { id: 8, title: "08. Cultivation and Retting of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 8.mp3" },
+                        { id: 9, title: "09. Physical and Chemical Properties of Flax Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 4/lession 9.mp3" },
+                    ]
+                },
+                {
+                    id: 5, title: "Unit 05. Wool Fibre", description: "Detailed insights into wool fibre", audioFiles: [
+                        { id: 1, title: "01. Grading of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 1.mp3" },
+                        { id: 2, title: "02. Morphological Structure of wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 2.mp3" },
+                        { id: 3, title: "03. Chemical Composition of wool fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 3.mp3" },
+                        { id: 4, title: "04. Chemical Structure of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 4.mp3" },
+                        { id: 5, title: "05. Different types of forces are present in wool fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 5.mp3" },
+                        { id: 6, title: "06. Physical and Chemical Properties of Wool Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 5/lession 6.mp3" }
+                    ]
+                },
+                {
+                    id: 6, title: "Unit 06. Silk Fibre", description: "Exploration of silk fibre chemistry", audioFiles: [
+                        { id: 1, title: "01. Varieties of Silk Fibre", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 1.mp3" },
+                        { id: 2, title: "02. Sericulture of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 2.mp3" },
+                        { id: 3, title: "03. Production Of Raw Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 3.mp3" },
+                        { id: 4, title: "04. Morphological Structure Of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 4.mp3" },
+                        { id: 5, title: "05. Chemical composition and chemical structure of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 5.mp3" },
+                        { id: 6, title: "06. Different types of forces are present in silk fibres", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 6.mp3" },
+                        { id: 7, title: "07. Physical and Chemical Properties of Silk", filePath: "audio/Textile Chemistry/subject 1/chapter 6/lession 7.mp3" }
+                    ]
+                }
             ]
         };
         const chemistryOfManMadeFibers = {
-        id: 98, 
-        title: "Chemistry of Man Made Fibers",
-        description: "Detailed study of the chemistry involved in man made textile fibers.",
-        chapters: [
-            { id: 1, title: "Unit 01 : Regenerated and Modified Cellulosic Fibres", description: "Introduction to  Regenerated and Modified Cellulosic Fibres", audioFiles: [
-                { id: 1, title: "01. Conversion of fibres from polymers involves the following principles", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 1.mp3" },
-                { id: 2, title: "02. WET SPINNING PROCESS_essential requirements, advantages and disadvantages", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 2.mp3" },
-                { id: 3, title: "03. Wet spinning Process", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 3.mp3"},
-                { id: 4, title: "04. Theory of Solidification of polymers in wet spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 4.mp3" },
-                { id: 5, title: "05. Manufacture of viscose rayon", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 5.mp3" },
-                { id: 6, title: "06. Polynosic Rayon", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 6.mp3" },
-                { id: 7, title: "07. Lyocell Fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 7.mp3" },
-                { id: 8, title: "08. Bamboo Fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 8.mp3"},
-                { id: 9, title: "09. Physical and Chemical Properties and Applications of Viscose Rayon", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 9.mp3" },
-                { id: 10, title: "10. DRY SPINNING PROCESS_essential requirements, advantages and disadvantages", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 10.mp3" },
-                { id: 11, title: "11. Theory of Solidification of polymers in dry spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 11.mp3" },
-                { id: 12, title: "12. Cellulose Acetate Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 12.mp3" },
-                { id: 13, title: "13. Production of Acetate Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 13.mp3"},
-                { id: 14, title: "14. Production of Acetate Fibre by using Dry Spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 14.mp3" },
-                { id: 15, title: "15. Production of Acetate Fibre by using Wet Spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 15.mp3" },
-                { id: 16, title: "16. Physical and Chemical Properties and Applications of Cellulose Acetate fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 16.mp3" }
-            ]},
-            { id: 2, title: "Unit 02. - Fundamentals of Synthetic Fibre Spinning", description: "Introduction to Fundamentals of Synthetic Fibre Spinning", audioFiles: [
-                { id: 1, title: "01. GENERAL PRINCIPLES OF THE SPINNING PROCESS", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 1.mp3" },
-                { id: 2, title: "02. CONCEPT OF MELT SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 2.mp3" },
-                { id: 3, title: "03. THE MELT SPINNING LINE", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 3.mp3"},
-                { id: 4, title: "04. VARIABLES IN MELT SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 4.mp3" },
-                { id: 5, title: "05. CONCEPT OF HIGH-SPEED SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 5.mp3" },
-                { id: 6, title: "06. CONCEPT OF LOY, MOY, POY, HOY & FOY", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 6.mp3" },
-                { id: 7, title: "07. DRAWING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 7.mp3" },
-                { id: 8, title: "08. SPIN DRAW PROCESSES", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 8.mp3"},
-                { id: 9, title: "09. DIRECT MELT SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 9.mp3" },
-                { id: 10, title: "10. GEL SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 10.mp3" },
-                { id: 11, title: "11. MICROFIBRES", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 11.mp3" },
-                { id: 12, title: "12. NANOOFIBRES", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 12.mp3" },
-            ]},
-            { id: 3, title: "Unit 03. - Polyester Fibre", description: "Introduction to Polyester Fibre", audioFiles: [
-                { id: 1, title: "01. History of Polyester", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 1.mp3" },
-                { id: 2, title: "02. Advantages and disadvantages of TPA Over DMT", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 2.mp3" },
-                { id: 3, title: "03. Synthesis of Polyester", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 3.mp3"},
-                { id: 4, title: "04. Manufacturing of Polyester using DMT route", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 4.mp3" },
-                { id: 5, title: "05. Manufacturing of Polyester using TPA route", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 5.mp3" },
-            ]},
-            { id: 4, title: "Unit 04. - Polyamide Fibres", description: "Introduction to Polyamide Fibres", audioFiles: [
-                { id: 1, title: "01. Introduction", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 1.mp3" },
-                { id: 2, title: "02. Manufacturing of Nylon 6", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 2.mp3" },
-                { id: 3, title: "03. Manufacturing of Nylon 66", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 3.mp3"},
-                { id: 4, title: "04. Physical and Chemical Properties of Nylon", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 4.mp3" },
-                { id: 5, title: "05. Modification of  Nylon Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 5.mp3" },
-                { id: 6, title: "06. Side Reactions During PET Synthesis", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 6.mp3" },
-                { id: 7, title: "07. Physical And Chemical Properties of Polyester", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 7.mp3" },
-                { id: 8, title: "08. Drawbacks of Synthetic Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 8.mp3"},
-                { id: 9, title: "09. Modifications in Polyester Fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 9.mp3" },
-                { id: 10, title: "10. Polypropylene Terephthalate (PPT)", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 10.mp3" },
-                { id: 11, title: "11. Polybutylene Terephthalate (PBT)", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 11.mp3" }
-            ]},
+            id: 98,
+            title: "Chemistry of Man Made Fibers",
+            description: "Detailed study of the chemistry involved in man made textile fibers.",
+            chapters: [
+                {
+                    id: 1, title: "Unit 01 : Regenerated and Modified Cellulosic Fibres", description: "Introduction to  Regenerated and Modified Cellulosic Fibres", audioFiles: [
+                        { id: 1, title: "01. Conversion of fibres from polymers involves the following principles", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 1.mp3" },
+                        { id: 2, title: "02. WET SPINNING PROCESS_essential requirements, advantages and disadvantages", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 2.mp3" },
+                        { id: 3, title: "03. Wet spinning Process", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 3.mp3" },
+                        { id: 4, title: "04. Theory of Solidification of polymers in wet spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 4.mp3" },
+                        { id: 5, title: "05. Manufacture of viscose rayon", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 5.mp3" },
+                        { id: 6, title: "06. Polynosic Rayon", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 6.mp3" },
+                        { id: 7, title: "07. Lyocell Fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 7.mp3" },
+                        { id: 8, title: "08. Bamboo Fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 8.mp3" },
+                        { id: 9, title: "09. Physical and Chemical Properties and Applications of Viscose Rayon", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 9.mp3" },
+                        { id: 10, title: "10. DRY SPINNING PROCESS_essential requirements, advantages and disadvantages", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 10.mp3" },
+                        { id: 11, title: "11. Theory of Solidification of polymers in dry spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 11.mp3" },
+                        { id: 12, title: "12. Cellulose Acetate Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 12.mp3" },
+                        { id: 13, title: "13. Production of Acetate Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 13.mp3" },
+                        { id: 14, title: "14. Production of Acetate Fibre by using Dry Spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 14.mp3" },
+                        { id: 15, title: "15. Production of Acetate Fibre by using Wet Spinning", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 15.mp3" },
+                        { id: 16, title: "16. Physical and Chemical Properties and Applications of Cellulose Acetate fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 1/lession 16.mp3" }
+                    ]
+                },
+                {
+                    id: 2, title: "Unit 02. - Fundamentals of Synthetic Fibre Spinning", description: "Introduction to Fundamentals of Synthetic Fibre Spinning", audioFiles: [
+                        { id: 1, title: "01. GENERAL PRINCIPLES OF THE SPINNING PROCESS", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 1.mp3" },
+                        { id: 2, title: "02. CONCEPT OF MELT SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 2.mp3" },
+                        { id: 3, title: "03. THE MELT SPINNING LINE", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 3.mp3" },
+                        { id: 4, title: "04. VARIABLES IN MELT SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 4.mp3" },
+                        { id: 5, title: "05. CONCEPT OF HIGH-SPEED SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 5.mp3" },
+                        { id: 6, title: "06. CONCEPT OF LOY, MOY, POY, HOY & FOY", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 6.mp3" },
+                        { id: 7, title: "07. DRAWING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 7.mp3" },
+                        { id: 8, title: "08. SPIN DRAW PROCESSES", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 8.mp3" },
+                        { id: 9, title: "09. DIRECT MELT SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 9.mp3" },
+                        { id: 10, title: "10. GEL SPINNING", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 10.mp3" },
+                        { id: 11, title: "11. MICROFIBRES", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 11.mp3" },
+                        { id: 12, title: "12. NANOOFIBRES", filePath: "audio/Textile Chemistry/subject 2/chapter 2/lession 12.mp3" },
+                    ]
+                },
+                {
+                    id: 3, title: "Unit 03. - Polyester Fibre", description: "Introduction to Polyester Fibre", audioFiles: [
+                        { id: 1, title: "01. History of Polyester", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 1.mp3" },
+                        { id: 2, title: "02. Advantages and disadvantages of TPA Over DMT", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 2.mp3" },
+                        { id: 3, title: "03. Synthesis of Polyester", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 3.mp3" },
+                        { id: 4, title: "04. Manufacturing of Polyester using DMT route", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 4.mp3" },
+                        { id: 5, title: "05. Manufacturing of Polyester using TPA route", filePath: "audio/Textile Chemistry/subject 2/chapter 3/lession 5.mp3" },
+                    ]
+                },
+                {
+                    id: 4, title: "Unit 04. - Polyamide Fibres", description: "Introduction to Polyamide Fibres", audioFiles: [
+                        { id: 1, title: "01. Introduction", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 1.mp3" },
+                        { id: 2, title: "02. Manufacturing of Nylon 6", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 2.mp3" },
+                        { id: 3, title: "03. Manufacturing of Nylon 66", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 3.mp3" },
+                        { id: 4, title: "04. Physical and Chemical Properties of Nylon", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 4.mp3" },
+                        { id: 5, title: "05. Modification of  Nylon Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 5.mp3" },
+                        { id: 6, title: "06. Side Reactions During PET Synthesis", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 6.mp3" },
+                        { id: 7, title: "07. Physical And Chemical Properties of Polyester", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 7.mp3" },
+                        { id: 8, title: "08. Drawbacks of Synthetic Fibres", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 8.mp3" },
+                        { id: 9, title: "09. Modifications in Polyester Fibre", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 9.mp3" },
+                        { id: 10, title: "10. Polypropylene Terephthalate (PPT)", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 10.mp3" },
+                        { id: 11, title: "11. Polybutylene Terephthalate (PBT)", filePath: "audio/Textile Chemistry/subject 2/chapter 4/lession 11.mp3" }
+                    ]
+                },
             ]
         };
         const programsData = [
@@ -303,356 +750,330 @@
             //     subjects: []
             // },
         ];
-       
 
-        // Current state variables
+
+
+        // Application Logic
         let currentProgram = null;
         let currentSubject = null;
         let currentChapter = null;
 
-        // DOM elements
-        const programsView = document.getElementById('programs-view');
-        const subjectsView = document.getElementById('subjects-view');
-        const chaptersView = document.getElementById('chapters-view');
-        const audioFilesView = document.getElementById('audio-files-view');
-        
-        const programBreadcrumb = document.getElementById('program-breadcrumb');
-        const subjectBreadcrumb = document.getElementById('subject-breadcrumb');
-        const chapterBreadcrumb = document.getElementById('chapter-breadcrumb');
-        
-        const programTitle = document.getElementById('program-title');
-        const subjectTitle = document.getElementById('subject-title');
-        const chapterTitle = document.getElementById('chapter-title');
-        
-        const subjectsContainer = document.getElementById('subjects-container');
-        const chaptersContainer = document.getElementById('chapters-container');
-        const audioFilesContainer = document.getElementById('audio-files-container');
-        
-        const backToPrograms = document.getElementById('back-to-programs');
-        const backToSubjects = document.getElementById('back-to-subjects');
-        const backToChapters = document.getElementById('back-to-chapters');
-
-        // Initialize the application
-        function init() {
-            renderPrograms();
-            setupEventListeners();
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Render programs
+        function updateBreadcrumbs() {
+            const nav = document.getElementById('breadcrumb-nav');
+            const bcProgram = document.getElementById('bc-program');
+            const divSubject = document.getElementById('div-subject');
+            const bcSubject = document.getElementById('bc-subject');
+            const divChapter = document.getElementById('div-chapter');
+            const bcChapter = document.getElementById('bc-chapter');
+
+            if (!currentProgram) {
+                nav.classList.add('hidden');
+                return;
+            }
+
+            nav.classList.remove('hidden');
+            bcProgram.textContent = currentProgram.title;
+            bcProgram.classList.remove('hidden');
+            bcProgram.onclick = () => navigateUp('program');
+
+            if (currentSubject) {
+                divSubject.classList.remove('hidden');
+                bcSubject.textContent = currentSubject.title;
+                bcSubject.classList.remove('hidden');
+                bcSubject.onclick = () => navigateUp('subject');
+            } else {
+                divSubject.classList.add('hidden');
+                bcSubject.classList.add('hidden');
+            }
+
+            if (currentChapter) {
+                divChapter.classList.remove('hidden');
+                bcChapter.textContent = currentChapter.title;
+                bcChapter.classList.remove('hidden');
+            } else {
+                divChapter.classList.add('hidden');
+                bcChapter.classList.add('hidden');
+            }
+        }
+
+        function navigateHome() {
+            currentProgram = null;
+            currentSubject = null;
+            currentChapter = null;
+            updateBreadcrumbs();
+            showView('programs-view');
+        }
+
+        function navigateUp(level) {
+            if (level === 'program') {
+                currentSubject = null;
+                currentChapter = null;
+                renderSubjects(currentProgram.id);
+            } else if (level === 'subject') {
+                currentChapter = null;
+                renderChapters(currentSubject.id);
+            } else if (level === 'chapter') {
+                renderAudioFiles(currentChapter.id);
+            }
+        }
+
         function renderPrograms() {
-            const programsContainer = document.querySelector('#programs-view .grid');
-            programsContainer.innerHTML = '';
-            
+            const container = document.getElementById('programs-container');
+            container.innerHTML = '';
+
             programsData.forEach(program => {
-                const programCard = document.createElement('div');
-                programCard.className = `program-card rounded-xl overflow-hidden shadow-lg ${program.color} text-white`;
-                programCard.innerHTML = `
-                    <div class="p-6">
-                        <div class="mb-4">
-                            ${program.icon}
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group flex flex-col h-full relative overflow-hidden backdrop-blur-xl";
+                card.onclick = () => renderSubjects(program.id);
+
+                card.innerHTML = `
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-primary-50 to-transparent dark:from-primary-900/20 rounded-bl-full -mr-20 -mt-20 transition-transform group-hover:scale-125 duration-700 pointer-events-none"></div>
+                    <div class="relative z-10 flex-grow">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center mb-8 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 group-hover:scale-110 transition-all duration-300">
+                            ${program.icon || '<svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>'}
                         </div>
-                        <h3 class="text-xl font-bold mb-2">${program.title}</h3>
-                        <button class="view-program bg-white bg-opacity-20 hover:bg-opacity-30 text-white py-2 px-4 rounded-lg transition duration-300 flex items-center" data-program-id="${program.id}">
-                            Explore Program
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
+                        <h3 class="text-2xl font-bold font-outfit text-slate-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">${program.title}</h3>
+                        <p class="text-slate-500 dark:text-slate-400 leading-relaxed mb-6 font-medium text-[15px]">${program.description || 'Comprehensive program covering key aspects of this discipline in depth.'}</p>
+                    </div>
+                    <div class="relative z-10 mt-auto pt-6 border-t border-slate-100 dark:border-white/5">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center text-primary-600 dark:text-primary-400 font-bold text-sm tracking-wide uppercase group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
+                                Explore
+                                <svg class="w-4 h-4 ml-1.5 transform group-hover:translate-x-1.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </span>
+                        </div>
                     </div>
                 `;
-                programsContainer.appendChild(programCard);
+                container.appendChild(card);
             });
         }
 
-        // Render subjects for a program
         function renderSubjects(programId) {
             currentProgram = programsData.find(p => p.id === programId);
-            if (!currentProgram) return;
-            
-            programTitle.textContent = currentProgram.title;
-            programBreadcrumb.textContent = currentProgram.title;
-            programBreadcrumb.classList.remove('hidden');
-            
-            subjectsContainer.innerHTML = '';
-            
-            currentProgram.subjects.forEach(subject => {
-                const subjectCard = document.createElement('div');
-                subjectCard.className = 'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300';
-                subjectCard.innerHTML = `
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">${subject.title}</h3>
-                        <p class="text-gray-600 mb-4">${subject.description}</p>
-                        <button class="view-subject bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300 flex items-center" data-subject-id="${subject.id}">
-                            View Chapters
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
+            document.getElementById('program-title').textContent = currentProgram.title;
+
+            const container = document.getElementById('subjects-container');
+            container.innerHTML = '';
+
+            const bgColors = ['bg-primary-50 text-primary-600', 'bg-secondary-50 text-secondary-600', 'bg-violet-50 text-violet-600', 'bg-indigo-50 text-indigo-600'];
+
+            currentProgram.subjects.forEach((subject, idx) => {
+                const colorClass = bgColors[idx % bgColors.length];
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-3xl p-7 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative overflow-hidden group cursor-pointer hover:border-primary-200 dark:hover:border-primary-800";
+                card.onclick = () => renderChapters(subject.id);
+
+                card.innerHTML = `
+                    <div class="absolute -bottom-6 -right-6 text-slate-50 dark:text-slate-800 transform group-hover:scale-110 transition-transform duration-500 pointer-events-none">
+                        <svg class="w-40 h-40" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                    </div>
+                    <div class="flex items-start justify-between mb-6 relative z-10">
+                        <div class="w-14 h-14 rounded-2xl ${colorClass} flex items-center justify-center font-bold font-outfit text-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            0${idx + 1}
+                        </div>
+                        <span class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full border border-slate-100 dark:border-white/5 shadow-inner">${(subject.chapters || []).length} Units</span>
+                    </div>
+                    <div class="relative z-10 flex-grow">
+                        <h3 class="text-[22px] font-bold font-outfit text-slate-900 dark:text-white mb-2 leading-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">${subject.title}</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-[15px] leading-relaxed">${subject.description || 'Dive into structured units and complete study materials.'}</p>
+                    </div>
+                    <div class="mt-8 pt-5 border-t border-slate-100 dark:border-white/5 relative z-10">
+                        <div class="flex items-center text-primary-600 dark:text-primary-400 text-[15px] font-bold">
+                            View Modules
+                            <svg class="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </div>
                     </div>
                 `;
-                subjectsContainer.appendChild(subjectCard);
+                container.appendChild(card);
             });
-            
-            programsView.classList.add('hidden');
-            subjectsView.classList.remove('hidden');
-            chaptersView.classList.add('hidden');
-            audioFilesView.classList.add('hidden');
+
+            updateBreadcrumbs();
+            showView('subjects-view');
         }
 
-        // Render chapters for a subject
         function renderChapters(subjectId) {
             currentSubject = currentProgram.subjects.find(s => s.id === subjectId);
-            if (!currentSubject) return;
-            
-            subjectTitle.textContent = currentSubject.title;
-            subjectBreadcrumb.textContent = currentSubject.title;
-            subjectBreadcrumb.classList.remove('hidden');
-            
-            chaptersContainer.innerHTML = '';
-            
-            currentSubject.chapters.forEach(chapter => {
-                const chapterCard = document.createElement('div');
-                chapterCard.className = 'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300';
-                chapterCard.innerHTML = `
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">${chapter.title}</h3>
-                        <p class="text-gray-600 mb-4">${chapter.description}</p>
-                        <button class="view-chapter bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300 flex items-center" data-chapter-id="${chapter.id}">
-                            Access Audio Lessons
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
+            document.getElementById('subject-title').textContent = currentSubject.title;
+
+            const container = document.getElementById('chapters-container');
+            container.innerHTML = '';
+
+            (currentSubject.chapters || []).forEach((chapter, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col md:flex-row items-start md:items-center gap-5 group hover:border-blue-100 dark:hover:border-blue-900";
+                card.onclick = () => renderAudioFiles(chapter.id);
+
+                card.innerHTML = `
+                    <div class="flex-shrink-0 w-16 h-16 rounded-[1.25rem] bg-blue-50/50 dark:bg-blue-900/20 text-blue-500 dark:text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 flex items-center justify-center shadow-inner group-hover:shadow-blue-500/30 group-hover:scale-105">
+                        <svg class="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div class="flex-grow min-w-0 pr-4">
+                        <h3 class="font-bold font-outfit text-slate-900 dark:text-white text-lg mb-1.5 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${chapter.title}</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-[14px] leading-snug line-clamp-2 pr-4">${chapter.description || 'Listen to the curated lecture tracks.'}</p>
+                    </div>
+                    <div class="flex-shrink-0 md:ml-auto w-full md:w-auto mt-2 md:mt-0 pt-3 md:pt-0 border-t border-slate-50 dark:border-white/5 md:border-0 flex justify-between items-center group-hover:border-transparent">
+                        <span class="inline-flex items-center text-[13px] font-bold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 px-3.5 py-1.5 rounded-full border border-slate-100 dark:border-white/5 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 dark:group-hover:text-blue-300 group-hover:border-blue-100 dark:group-hover:border-blue-800 transition-all">
+                            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            ${(chapter.audioFiles || []).length} Audio Lessons
+                        </span>
                     </div>
                 `;
-                chaptersContainer.appendChild(chapterCard);
+                container.appendChild(card);
             });
-            
-            programsView.classList.add('hidden');
-            subjectsView.classList.add('hidden');
-            chaptersView.classList.remove('hidden');
-            audioFilesView.classList.add('hidden');
+
+            updateBreadcrumbs();
+            showView('chapters-view');
         }
 
-        // Render audio files for a chapter
+        let currentlyPlayingAudio = null;
+        let currentlyPlayingId = null;
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return m + ':' + (s < 10 ? '0' + s : s);
+        }
+
+        window.togglePlay = function (id) {
+            const audio = document.getElementById('audio-el-' + id);
+            const btnPlay = document.getElementById('btn-play-' + id);
+
+            const playIcon = '<path d="M8 5v14l11-7z"/>';
+            const pauseIcon = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+
+            if (audio.paused) {
+                if (currentlyPlayingAudio && currentlyPlayingAudio !== audio) {
+                    currentlyPlayingAudio.pause();
+                    const oldId = currentlyPlayingId;
+                    const oldBtn = document.getElementById('btn-play-' + oldId);
+                    if (oldBtn) oldBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-0.5">${playIcon}</svg>`;
+                }
+
+                audio.play();
+                if (btnPlay) btnPlay.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">${pauseIcon}</svg>`;
+                currentlyPlayingAudio = audio;
+                currentlyPlayingId = id;
+            } else {
+                audio.pause();
+                if (btnPlay) btnPlay.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-0.5">${playIcon}</svg>`;
+                currentlyPlayingAudio = null;
+                currentlyPlayingId = null;
+            }
+        };
+
+        window.updateProgress = function (id) {
+            const audio = document.getElementById('audio-el-' + id);
+            const progress = document.getElementById('progress-' + id);
+            const timeCurr = document.getElementById('time-curr-' + id);
+            const timeTotal = document.getElementById('time-total-' + id);
+
+            if (!isNaN(audio.duration)) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                if (progress) {
+                    progress.value = percent;
+                    progress.style.backgroundSize = percent + '% 100%';
+                }
+                if (timeCurr) timeCurr.textContent = formatTime(audio.currentTime);
+                if (timeTotal) timeTotal.textContent = formatTime(audio.duration);
+            }
+        };
+
+        window.seekAudio = function (id) {
+            const audio = document.getElementById('audio-el-' + id);
+            const progress = document.getElementById('progress-' + id);
+            const seekTo = (progress.value / 100) * audio.duration;
+            audio.currentTime = seekTo;
+        };
+
+        window.setDuration = function (id) {
+            const audio = document.getElementById('audio-el-' + id);
+            const timeCurr = document.getElementById('time-curr-' + id);
+            const timeTotal = document.getElementById('time-total-' + id);
+            if (!isNaN(audio.duration)) {
+                if (timeCurr) timeCurr.textContent = '0:00';
+                if (timeTotal) timeTotal.textContent = formatTime(audio.duration);
+            }
+        };
+
         function renderAudioFiles(chapterId) {
             currentChapter = currentSubject.chapters.find(c => c.id === chapterId);
-            if (!currentChapter) return;
-            
-            chapterTitle.textContent = currentChapter.title;
-            chapterBreadcrumb.textContent = currentChapter.title;
-            chapterBreadcrumb.classList.remove('hidden');
-            
-            audioFilesContainer.innerHTML = '';
-            
-            currentChapter.audioFiles.forEach((audioFile, index) => {
-                const audioPlayer = document.createElement('div');
-                audioPlayer.className = 'audio-player rounded-xl p-4 bg-white';
-                audioPlayer.innerHTML = `
-                        <div class="flex flex-col md:flex-row md:items-center justify-between">
-                            <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-800">${audioFile.title}</h4>
+            document.getElementById('chapter-title').textContent = currentChapter.title;
+            const audioFiles = currentChapter.audioFiles || [];
+            document.getElementById('audio-count').textContent = audioFiles.length;
+
+            const container = document.getElementById('audio-files-container');
+            container.innerHTML = '';
+
+            audioFiles.forEach((file, idx) => {
+                const fId = file.id;
+                const paddedIdx = (idx + 1).toString().padStart(2, '0');
+
+                const card = document.createElement('div');
+                card.id = 'wrapper-' + fId;
+                card.className = "relative overflow-hidden p-6 rounded-[2rem] bg-slate-800 text-white shadow-xl transition-all duration-300 w-full mb-6 max-w-2xl mx-auto";
+
+                card.innerHTML = `
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900 opacity-80 backdrop-blur-3xl"></div>
+                    <div class="relative z-10 w-full">
+                        
+                        <div class="mb-5 flex flex-col items-start gap-1 cursor-pointer overflow-hidden w-full" onclick="togglePlay(${fId})">
+                            <div class="marquee-container">
+                                <h4 id="title-${fId}" class="font-bold text-white text-xl sm:text-2xl mb-1 marquee-content" title="${file.title}">
+                                    <span class="pr-10">${file.title}</span><span class="pr-10">${file.title}</span>
+                                </h4>
                             </div>
-                            <div class="flex items-center mt-3 md:mt-0">
-                            <audio id="audio-${audioFile.id}" controls class="mr-4">
-                                <source src="${audioFile.filePath}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
+                            <p class="text-sm text-slate-400 font-medium">${currentChapter.title} &bull; Track ${paddedIdx}</p>
+                        </div>
+
+                        <div class="w-full mb-2 cursor-pointer relative group">
+                            <input type="range" id="progress-${fId}" value="0" min="0" max="100" step="0.1" class="progress-dark" oninput="seekAudio(${fId})">
+                            <div class="flex justify-between items-center mt-1 text-[11px] text-slate-400 font-medium tracking-wide">
+                                <span id="time-curr-${fId}">0:00</span>
+                                <span id="time-total-${fId}">0:00</span>
                             </div>
                         </div>
-                        `;
 
-                audioFilesContainer.appendChild(audioPlayer);
-            });
-            
-            programsView.classList.add('hidden');
-            subjectsView.classList.add('hidden');
-            chaptersView.classList.add('hidden');
-            audioFilesView.classList.remove('hidden');
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            // Program selection
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.view-program')) {
-                    const programId = parseInt(e.target.closest('.view-program').dataset.programId);
-                    renderSubjects(programId);
-                }
-            });
-            
-            // Subject selection
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.view-subject')) {
-                    const subjectId = parseInt(e.target.closest('.view-subject').dataset.subjectId);
-                    renderChapters(subjectId);
-                }
-            });
-            
-            // Chapter selection
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.view-chapter')) {
-                    const chapterId = parseInt(e.target.closest('.view-chapter').dataset.chapterId);
-                    renderAudioFiles(chapterId);
-                }
-            });
-            
-            // Audio player controls
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.play-btn')) {
-                    const audioId = parseInt(e.target.closest('.play-btn').dataset.audioId);
-                    togglePlayPause(e.target.closest('.play-btn'), audioId);
-                }
-            });
-            
-            // Navigation back buttons
-            backToPrograms.addEventListener('click', function() {
-                programsView.classList.remove('hidden');
-                subjectsView.classList.add('hidden');
-                programBreadcrumb.classList.add('hidden');
-                subjectBreadcrumb.classList.add('hidden');
-                chapterBreadcrumb.classList.add('hidden');
-                currentProgram = null;
-            });
-            
-            backToSubjects.addEventListener('click', function() {
-                subjectsView.classList.remove('hidden');
-                chaptersView.classList.add('hidden');
-                subjectBreadcrumb.classList.add('hidden');
-                chapterBreadcrumb.classList.add('hidden');
-                currentSubject = null;
-            });
-            
-            backToChapters.addEventListener('click', function() {
-                chaptersView.classList.remove('hidden');
-                audioFilesView.classList.add('hidden');
-                chapterBreadcrumb.classList.add('hidden');
-                currentChapter = null;
-            });
-            
-            // Breadcrumb navigation
-            document.getElementById('breadcrumb').addEventListener('click', function(e) {
-                if (e.target.textContent === 'Home') {
-                    programsView.classList.remove('hidden');
-                    subjectsView.classList.add('hidden');
-                    chaptersView.classList.add('hidden');
-                    audioFilesView.classList.add('hidden');
-                    programBreadcrumb.classList.add('hidden');
-                    subjectBreadcrumb.classList.add('hidden');
-                    chapterBreadcrumb.classList.add('hidden');
-                    currentProgram = null;
-                    currentSubject = null;
-                    currentChapter = null;
-                } else if (e.target === programBreadcrumb) {
-                    subjectsView.classList.remove('hidden');
-                    chaptersView.classList.add('hidden');
-                    audioFilesView.classList.add('hidden');
-                    subjectBreadcrumb.classList.add('hidden');
-                    chapterBreadcrumb.classList.add('hidden');
-                    currentSubject = null;
-                    currentChapter = null;
-                } else if (e.target === subjectBreadcrumb) {
-                    chaptersView.classList.remove('hidden');
-                    audioFilesView.classList.add('hidden');
-                    chapterBreadcrumb.classList.add('hidden');
-                    currentChapter = null;
-                }
-            });
-        }
-
-        // Toggle play/pause for audio
-        function togglePlayPause(button, audioId) {
-            const isPlaying = button.classList.contains('playing');
-            
-            // Reset all buttons to play state
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                btn.classList.remove('playing');
-                btn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                        <div class="flex items-center justify-between mt-1 px-1 sm:px-3">
+                            <button class="text-slate-400 hover:text-white transition-colors focus:outline-none ml-1">
+                                
+                            </button>
+                            
+                            <div class="flex items-center gap-6 sm:gap-8">
+                                <button id="btn-play-${fId}" class="text-slate-900 bg-white hover:scale-105 transition-transform focus:outline-none p-3.5 rounded-full shadow-lg" onclick="togglePlay(${fId})">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-0.5">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <button class="text-slate-400 hover:text-white transition-colors focus:outline-none mr-1">
+                                
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <audio id="audio-el-${fId}" ontimeupdate="updateProgress(${fId})" onloadedmetadata="setDuration(${fId})" onended="togglePlay(${fId})" class="hidden">
+                        <source src="${file.filePath}" type="audio/mpeg">
+                    </audio>
                 `;
+                container.appendChild(card);
             });
-            
-            // Reset all progress bars
-            document.querySelectorAll('.progress-bar').forEach(bar => {
-                bar.value = 0;
-            });
-            
-            if (!isPlaying) {
-                // Set this button to pause state
-                button.classList.add('playing');
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                `;
-                
-                // Simulate audio progress
-                simulateAudioProgress(button.closest('.audio-player').querySelector('.progress-bar'), audioId);
-            }
+
+            updateBreadcrumbs();
+            showView('audio-files-view');
         }
 
-        // Simulate audio progress
-        function simulateAudioProgress(progressBar, audioId) {
-            let progress = 0;
-            const audioFile = currentChapter.audioFiles.find(a => a.id === audioId);
-            const timeDisplay = document.querySelector(`.audio-time-${audioId}`);
-            
-            // Parse duration
-            const durationParts = audioFile.duration.split(':');
-            const totalSeconds = parseInt(durationParts[0]) * 60 + parseInt(durationParts[1]);
-            
-            const interval = setInterval(() => {
-                if (progress >= 100 || !document.querySelector('.play-btn.playing')) {
-                    clearInterval(interval);
-                    return;
-                }
-                
-                progress += 0.5;
-                progressBar.value = progress;
-                
-                // Update time display
-                const currentSeconds = Math.floor((progress / 100) * totalSeconds);
-                const minutes = Math.floor(currentSeconds / 60);
-                const seconds = currentSeconds % 60;
-                timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')} / ${audioFile.duration}`;
-                
-            }, 500);
-        }
-
-        init();
-    </script>
-    <script>
-        (function(){
-            function c(){
-                var b=a.contentDocument||a.contentWindow.document;
-                if(b){
-                    var d=b.createElement('script');
-                    d.innerHTML="window.__CF$cv$params={r:'946c8857613547c3',t:'MTc0ODQyMjUyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-                    b.getElementsByTagName('head')[0].appendChild(d)
-                }
-            }
-            if(document.body){
-                var a=document.createElement('iframe');
-                a.height=1;
-                a.width=1;
-                a.style.position='absolute';
-                a.style.top=0;
-                a.style.left=0;
-                a.style.border='none';
-                a.style.visibility='hidden';
-                document.body.appendChild(a);
-                if('loading'!==document.readyState)c();
-                else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);
-                else{var e=document.onreadystatechange||function(){};
-                    document.onreadystatechange=function(b){e(b);
-                        'loading'!==document.readyState&&(document.onreadystatechange=e,c())
-                    }
-                }
-            }
-        })();
+        window.onload = () => {
+            renderPrograms();
+        };
     </script>
 </body>
+
 </html>
