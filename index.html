@@ -24,6 +24,10 @@
                         outfit: ['Outfit', 'sans-serif'],
                     },
                     colors: {
+                        spotify: {
+                            DEFAULT: '#1DB954',
+                            dark: '#1ed760'
+                        },
                         primary: {
                             50: '#eff6ff',
                             100: '#dbeafe',
@@ -113,7 +117,7 @@
             height: 4px;
             border-radius: 2px;
             cursor: pointer;
-            background: linear-gradient(#b6e3d4, #b6e3d4) no-repeat rgba(255, 255, 255, 0.2);
+            background: linear-gradient(#1DB954, #1DB954) no-repeat rgba(255, 255, 255, 0.2);
             background-size: 0% 100%;
         }
 
@@ -133,7 +137,7 @@
             height: 14px;
             width: 14px;
             border-radius: 50%;
-            background: #b6e3d4;
+            background: #ffffff;
             cursor: pointer;
             -webkit-appearance: none;
             margin-top: -5px;
@@ -158,7 +162,7 @@
             height: 14px;
             width: 14px;
             border-radius: 50%;
-            background: #b6e3d4;
+            background: #ffffff;
             cursor: pointer;
             border: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -176,6 +180,15 @@
             -webkit-backdrop-filter: saturate(200%) blur(24px);
         }
 
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -319,7 +332,7 @@
 <body class="min-h-screen flex flex-col antialiased selection:bg-secondary-200 selection:text-secondary-900">
 
     <!-- Navbar -->
-    <div class="sticky top-4 z-50 px-4 sm:px-6 w-full max-w-7xl mx-auto flex justify-center">
+    <div class="sticky top-2 sm:top-4 z-50 px-2 sm:px-6 w-full max-w-7xl mx-auto flex justify-center">
         <header
             class="w-full glass rounded-[2rem] transition-all duration-500 border border-white/60 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-hidden relative group hover:shadow-[0_16px_40px_rgba(30,58,138,0.12)]">
             <div
@@ -328,7 +341,7 @@
             <div
                 class="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 z-20 pointer-events-none">
             </div>
-            <div class="container mx-auto px-6 py-3.5 relative z-10 transition-transform duration-500">
+            <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 relative z-10 transition-transform duration-500">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-3 cursor-pointer transform transition-transform group-hover:scale-[1.02]"
                         onclick="navigateHome()">
@@ -340,7 +353,7 @@
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-2xl font-bold font-outfit text-slate-800 tracking-tight">Textile<span
+                            <h1 class="text-xl sm:text-2xl font-bold font-outfit text-slate-800 tracking-tight">Textile<span
                                     class="text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 to-primary-600">Guru</span>
                             </h1>
                         </div>
@@ -368,12 +381,12 @@
         </header>
     </div>
 
-    <main class="flex-grow container mx-auto px-4 sm:px-6 py-8 md:py-12 max-w-7xl">
+    <main class="flex-grow container mx-auto px-3 sm:px-6 py-6 md:py-12 max-w-7xl pb-32">
 
         <!-- Breadcrumb Navigation -->
         <nav id="breadcrumb-nav" class="hidden mb-8">
             <div
-                class="inline-flex items-center px-5 py-2.5 bg-white dark:bg-slate-800/80 rounded-full border border-slate-200 dark:border-white/5 shadow-sm text-[13px] font-semibold text-slate-600 dark:text-slate-300 flex-wrap gap-y-2 backdrop-blur-md">
+                class="flex items-center px-4 sm:px-5 py-2 sm:py-2.5 bg-white dark:bg-slate-800/80 rounded-full border border-slate-200 dark:border-white/5 shadow-sm text-[12px] sm:text-[13px] font-semibold text-slate-600 dark:text-slate-300 overflow-x-auto whitespace-nowrap hide-scrollbar max-w-full backdrop-blur-md">
                 <button onclick="navigateHome()"
                     class="hover:text-primary-600 dark:hover:text-primary-400 flex items-center transition-colors">
                     <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -397,7 +410,7 @@
         <!-- Programs View -->
         <div id="programs-view" class="view-section active">
             <div
-                class="relative overflow-hidden bg-slate-900 dark:bg-[#070b14] rounded-[2.5rem] p-10 md:p-16 lg:p-20 mb-16 shadow-2xl border border-transparent dark:border-white/5">
+                class="relative overflow-hidden bg-slate-900 dark:bg-[#070b14] rounded-3xl md:rounded-[2.5rem] p-6 sm:p-10 md:p-16 lg:p-20 mb-10 md:mb-16 shadow-2xl border border-transparent dark:border-white/5">
                 <div class="absolute inset-0 hero-pattern opacity-10"></div>
                 <div
                     class="absolute top-0 right-0 -mr-32 -mt-32 w-[30rem] h-[30rem] rounded-full bg-blue-600/30 blur-[100px] opacity-60">
@@ -416,7 +429,7 @@
                         Premium Education
                     </div> -->
                     <h2
-                        class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 font-outfit leading-[1.1]">
+                        class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 md:mb-8 font-outfit leading-[1.1]">
                         Master the Science of <br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">Textile
@@ -452,7 +465,7 @@
         <!-- Subjects View -->
         <div id="subjects-view" class="view-section">
             <div
-                class="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 border border-slate-100 dark:border-white/5 shadow-sm mb-12 overflow-hidden relative backdrop-blur-md">
+                class="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-12 border border-slate-100 dark:border-white/5 shadow-sm mb-12 overflow-hidden relative backdrop-blur-md">
                 <div
                     class="absolute right-0 top-0 w-[400px] h-[400px] bg-indigo-50/50 dark:bg-indigo-900/20 rounded-full blur-[80px] -mr-20 -mt-20 opacity-60 pointer-events-none">
                 </div>
@@ -464,7 +477,7 @@
                             Program Overview
                         </span>
                         <h2 id="program-title"
-                            class="text-4xl md:text-5xl font-extrabold font-outfit text-slate-900 dark:text-white mb-4 tracking-tight leading-tight">
+                            class="text-3xl md:text-5xl font-extrabold font-outfit text-slate-900 dark:text-white mb-4 tracking-tight leading-tight">
                         </h2>
                         <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed font-medium">Select a
                             specialized subject to access detailed chapters, study resources, and master the curriculum.
@@ -479,11 +492,11 @@
         <!-- Chapters View -->
         <div id="chapters-view" class="view-section">
             <div
-                class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-white/5 shadow-sm mb-10 relative overflow-hidden backdrop-blur-md">
+                class="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 border border-slate-100 dark:border-white/5 shadow-sm mb-10 relative overflow-hidden backdrop-blur-md">
                 <div
                     class="absolute left-0 top-0 w-[400px] h-[400px] bg-blue-50/50 dark:bg-blue-900/10 rounded-full blur-[80px] -ml-20 -mt-20 opacity-80 pointer-events-none">
                 </div>
-                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6">
                     <div>
                         <span
                             class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold tracking-wide text-[11px] uppercase mb-4 border border-blue-100 dark:border-blue-800/50">
@@ -510,7 +523,7 @@
         <!-- Audio Files View -->
         <div id="audio-files-view" class="view-section">
             <div
-                class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-10 mb-8 shadow-xl text-white relative overflow-hidden">
+                class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-5 md:p-10 mb-5 md:mb-8 shadow-xl text-white relative overflow-hidden">
                 <div
                     class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50">
                 </div>
@@ -526,14 +539,14 @@
                         <span class="text-slate-300 font-medium uppercase tracking-wider text-sm">Audio
                             Lessons</span>
                     </div>
-                    <h2 id="chapter-title" class="text-3xl md:text-4xl font-bold font-outfit mb-4"></h2>
-                    <p class="text-slate-300 text-lg font-light max-w-2xl">Immerse yourself in high-quality audio
+                    <h2 id="chapter-title" class="text-2xl md:text-4xl font-bold font-outfit mb-2 md:mb-4"></h2>
+                    <p class="text-slate-300 text-sm md:text-lg font-light max-w-2xl">Immerse yourself in high-quality audio
                         lectures designed for comprehensive understanding.</p>
                 </div>
             </div>
 
             <div
-                class="bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-white/5 shadow-sm p-6 md:p-8 backdrop-blur-sm">
+                class="bg-white dark:bg-[#121212] rounded-3xl border border-slate-100 dark:border-white/5 shadow-sm p-2 md:p-6 backdrop-blur-sm">
                 <div class="flex items-center justify-between mb-8 border-b border-slate-100 dark:border-white/5 pb-5">
                     <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white font-outfit tracking-tight">
                         Tracklist</h3>
@@ -542,10 +555,139 @@
                         <span id="audio-count">0</span> Tracks
                     </div>
                 </div>
-                <div id="audio-files-container" class="space-y-4"></div>
+                <div id="audio-files-container" class="space-y-1"></div>
             </div>
         </div>
-    </main>
+    
+    <!-- Global Spotify Audio Player -->
+    <div id="global-player" class="fixed bottom-0 left-0 w-full bg-[#181818] border-t border-white/10 text-white z-50 transform translate-y-full transition-transform duration-500 flex flex-col md:flex-row items-center justify-between px-3 sm:px-6 py-2 sm:py-3 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        
+        <!-- Top row on mobile / Left section on desktop -->
+        <div class="flex items-center justify-between w-full md:w-1/3 min-w-[150px] sm:min-w-[200px] gap-3 sm:gap-4 mb-1 md:mb-0">
+            <div class="flex items-center gap-3 sm:gap-4 overflow-hidden w-full md:w-auto cursor-pointer" onclick="openFullScreenPlayer()">
+                <div class="w-10 h-10 sm:w-14 sm:h-14 bg-[#282828] rounded flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-[#b3b3b3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                    </svg>
+                </div>
+                <div class="overflow-hidden min-w-0">
+                    <h4 id="player-title" class="text-xs sm:text-sm font-semibold text-white truncate max-w-full ">Select a track</h4>
+                    <p id="player-subtitle" class="text-[10px] sm:text-xs text-[#b3b3b3] truncate mt-0.5 ">---</p>
+                </div>
+            </div>
+            
+            <!-- Mobile play/pause button (hidden on desktop) -->
+            <button id="player-play-btn-mobile" class="w-8 h-8 rounded-full bg-transparent text-white flex items-center justify-center focus:outline-none md:hidden flex-shrink-0 ml-2" onclick="toggleGlobalPlay()">
+                <svg id="player-play-icon-mobile" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Center section: Controls and Progress -->
+        <div class="flex flex-col items-center w-full md:w-1/3 max-w-[500px]">
+            <!-- Desktop playback buttons -->
+            <div class="hidden md:flex items-center gap-6 mb-1.5">
+                <button class="text-[#b3b3b3] hover:text-white transition-colors focus:outline-none" onclick="playPrev()">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"/></svg>
+                </button>
+                <button id="player-play-btn" class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform focus:outline-none" onclick="toggleGlobalPlay()">
+                    <svg id="player-play-icon" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-0.5">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button class="text-[#b3b3b3] hover:text-white transition-colors focus:outline-none" onclick="playNext()">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"/></svg>
+                </button>
+            </div>
+            <!-- Progress bar -->
+            <div class="w-full flex items-center gap-2 group">
+                <span id="player-time-curr" class="text-[10px] sm:text-[11px] text-[#b3b3b3] min-w-[30px] sm:min-w-[35px] text-right">0:00</span>
+                <input type="range" id="player-progress" value="0" min="0" max="100" step="0.1" class="progress-dark" oninput="seekGlobalAudio()">
+                <span id="player-time-total" class="text-[10px] sm:text-[11px] text-[#b3b3b3] min-w-[30px] sm:min-w-[35px]">0:00</span>
+            </div>
+        </div>
+
+        <!-- Right section: Volume -->
+        <div class="hidden md:flex items-center w-1/3 justify-end gap-2 pr-2">
+            <svg class="w-5 h-5 text-[#b3b3b3]" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+                <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.889l.706.707z"/>
+                <path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/>
+            </svg>
+            <input type="range" id="player-volume" value="100" min="0" max="100" step="1" class="progress-dark w-24" oninput="changeVolume()">
+        </div>
+    </div>
+    
+    <!-- Full Screen Spotify Player -->
+    <div id="fs-player" class="fixed inset-0 z-[100] bg-gradient-to-b from-[#2a2d36] to-[#121212] text-white transform translate-y-full transition-transform duration-500 flex flex-col pt-8 pb-10 px-6 sm:px-12 md:hidden">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <button class="p-2 -ml-2 focus:outline-none" onclick="closeFullScreenPlayer()">
+                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="text-[11px] font-bold tracking-[0.2em] text-slate-300 uppercase">Now Playing</div>
+            <button class="p-2 -mr-2 focus:outline-none text-slate-300">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Album Art -->
+        <div class="flex-grow flex items-center justify-center mb-8 px-2 max-h-[350px]">
+            <div class="w-full h-full max-w-[350px] aspect-square bg-[#282828] rounded-2xl flex items-center justify-center shadow-[0_15px_50px_rgba(0,0,0,0.5)]">
+                <svg class="w-24 h-24 text-[#b3b3b3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Title & Info -->
+        <div class="mb-6 px-2">
+            <h2 id="fs-player-title" class="text-[22px] font-bold font-outfit text-white truncate mb-1">Select a track</h2>
+            <p id="fs-player-subtitle" class="text-[15px] text-[#b3b3b3] truncate font-medium">---</p>
+        </div>
+
+        <!-- Scrubber -->
+        <div class="mb-6 px-2">
+            <input type="range" id="fs-player-progress" value="0" min="0" max="100" step="0.1" class="progress-dark w-full mb-3" oninput="seekFsAudio()">
+            <div class="flex items-center justify-between text-[11px] text-[#b3b3b3] font-medium tracking-wide">
+                <span id="fs-player-time-curr">0:00</span>
+                <span id="fs-player-time-total">0:00</span>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center justify-between px-2 mb-2">
+            <button class="text-[#b3b3b3] hover:text-white focus:outline-none transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </button>
+            
+            <button class="text-white hover:text-spotify-DEFAULT focus:outline-none transition-colors" onclick="playPrev()">
+                <svg class="w-9 h-9 fill-current" viewBox="0 0 16 16"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"/></svg>
+            </button>
+            
+            <button id="fs-player-play-btn" class="w-[68px] h-[68px] rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform focus:outline-none shadow-xl" onclick="toggleGlobalPlay()">
+                <svg id="fs-player-play-icon" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 ml-1">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            
+            <button class="text-white hover:text-spotify-DEFAULT focus:outline-none transition-colors" onclick="playNext()">
+                <svg class="w-9 h-9 fill-current" viewBox="0 0 16 16"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"/></svg>
+            </button>
+
+            <button class="text-[#b3b3b3] hover:text-white focus:outline-none transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            </button>
+        </div>
+    </div>
+    <audio id="global-audio-el"
+ ontimeupdate="updateGlobalProgress()" onloadedmetadata="setGlobalDuration()" onended="playNext()"></audio>
+</main>
 
     <!-- Footer -->
     <footer class="bg-white dark:bg-[#070b14] border-t border-slate-200 dark:border-white/5 mt-auto">
@@ -829,7 +971,7 @@
 
             programsData.forEach(program => {
                 const card = document.createElement('div');
-                card.className = "bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group flex flex-col h-full relative overflow-hidden backdrop-blur-xl";
+                card.className = "bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group flex flex-col h-full relative overflow-hidden backdrop-blur-xl";
                 card.onclick = () => renderSubjects(program.id);
 
                 card.innerHTML = `
@@ -931,8 +1073,9 @@
             showView('chapters-view');
         }
 
-        let currentlyPlayingAudio = null;
-        let currentlyPlayingId = null;
+        let currentTrackList = [];
+        let currentTrackIndex = -1;
+        let isGlobalPlaying = false;
 
         function formatTime(seconds) {
             if (!seconds || isNaN(seconds)) return '0:00';
@@ -940,67 +1083,207 @@
             const s = Math.floor(seconds % 60);
             return m + ':' + (s < 10 ? '0' + s : s);
         }
+        
+        
+        window.openFullScreenPlayer = function() {
+            document.getElementById('fs-player').classList.remove('translate-y-full');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        };
+        
+        window.closeFullScreenPlayer = function() {
+            document.getElementById('fs-player').classList.add('translate-y-full');
+            document.body.style.overflow = '';
+        };
 
-        window.togglePlay = function (id) {
-            const audio = document.getElementById('audio-el-' + id);
-            const btnPlay = document.getElementById('btn-play-' + id);
+        window.seekFsAudio = function() {
+            const audio = document.getElementById('global-audio-el');
+            const progress = document.getElementById('fs-player-progress');
+            if (audio.duration) {
+                const seekTo = (progress.value / 100) * audio.duration;
+                audio.currentTime = seekTo;
+                // Keep mini player in sync
+                document.getElementById('player-progress').value = progress.value;
+                document.getElementById('player-progress').style.backgroundSize = progress.value + '% 100%';
+            }
+        };
 
-            const playIcon = '<path d="M8 5v14l11-7z"/>';
-            const pauseIcon = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        window.playTrack = function(index) {
+            if (index < 0 || index >= currentTrackList.length) return;
+            
+            const file = currentTrackList[index];
+            const audioEl = document.getElementById('global-audio-el');
+            
+            if (currentTrackIndex === index) {
+                toggleGlobalPlay();
+                return;
+            }
 
-            if (audio.paused) {
-                if (currentlyPlayingAudio && currentlyPlayingAudio !== audio) {
-                    currentlyPlayingAudio.pause();
-                    const oldId = currentlyPlayingId;
-                    const oldBtn = document.getElementById('btn-play-' + oldId);
-                    if (oldBtn) oldBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-0.5">${playIcon}</svg>`;
+            // Remove active class from previous
+            if (currentTrackIndex !== -1) {
+                const prevRow = document.getElementById('track-row-' + currentTrackIndex);
+                const prevNum = document.getElementById('track-num-' + currentTrackIndex);
+                if (prevRow) {
+                    prevRow.classList.remove('bg-white/5', 'dark:bg-white/10');
+                    prevRow.querySelector('.track-title').classList.remove('text-spotify-DEFAULT');
+                    prevNum.innerHTML = (currentTrackIndex + 1);
+                    prevNum.classList.remove('text-spotify-DEFAULT', 'hidden', 'group-hover:block');
+                    prevNum.classList.add('group-hover:hidden');
+                    prevRow.querySelector('.track-play').classList.add('hidden');
+                    prevRow.querySelector('.track-play').classList.remove('text-spotify-DEFAULT');
                 }
+            }
+            
+            currentTrackIndex = index;
+            
+            // Set active class
+            const currRow = document.getElementById('track-row-' + index);
+            const currNum = document.getElementById('track-num-' + index);
+            if (currRow) {
+                currRow.classList.add('bg-white/5', 'dark:bg-white/10');
+                currRow.querySelector('.track-title').classList.add('text-spotify-DEFAULT');
+                currNum.classList.add('text-spotify-DEFAULT', 'hidden');
+                currRow.querySelector('.track-play').classList.remove('hidden');
+                currRow.querySelector('.track-play').classList.add('text-spotify-DEFAULT');
+                currRow.querySelector('.track-play').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+            }
 
-                audio.play();
-                if (btnPlay) btnPlay.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">${pauseIcon}</svg>`;
-                currentlyPlayingAudio = audio;
-                currentlyPlayingId = id;
+            // Update Player UI
+            document.getElementById('player-title').textContent = file.title;
+            document.getElementById('player-subtitle').textContent = currentChapter.title;
+            document.getElementById('fs-player-title').textContent = file.title;
+            document.getElementById('fs-player-subtitle').textContent = currentChapter.title;
+            
+            // Show player
+            document.getElementById('global-player').classList.remove('translate-y-full');
+
+            // Play audio
+            audioEl.src = file.filePath;
+            audioEl.play().catch(e => console.log('Audio play error:', e));
+            
+            isGlobalPlaying = true;
+            updatePlayPauseIcon();
+        };
+
+        window.toggleGlobalPlay = function() {
+            const audioEl = document.getElementById('global-audio-el');
+            if (!audioEl.src) return;
+
+            if (audioEl.paused) {
+                audioEl.play();
+                isGlobalPlaying = true;
             } else {
-                audio.pause();
-                if (btnPlay) btnPlay.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-0.5">${playIcon}</svg>`;
-                currentlyPlayingAudio = null;
-                currentlyPlayingId = null;
+                audioEl.pause();
+                isGlobalPlaying = false;
             }
-        };
-
-        window.updateProgress = function (id) {
-            const audio = document.getElementById('audio-el-' + id);
-            const progress = document.getElementById('progress-' + id);
-            const timeCurr = document.getElementById('time-curr-' + id);
-            const timeTotal = document.getElementById('time-total-' + id);
-
-            if (!isNaN(audio.duration)) {
-                const percent = (audio.currentTime / audio.duration) * 100;
-                if (progress) {
-                    progress.value = percent;
-                    progress.style.backgroundSize = percent + '% 100%';
+            updatePlayPauseIcon();
+            
+            // Update row icon
+            if (currentTrackIndex !== -1) {
+                const currRow = document.getElementById('track-row-' + currentTrackIndex);
+                if (currRow) {
+                    const playPath = '<path d="M8 5v14l11-7z"/>';
+                    const pausePath = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                    currRow.querySelector('.track-play').innerHTML = isGlobalPlaying ? pausePath : playPath;
                 }
-                if (timeCurr) timeCurr.textContent = formatTime(audio.currentTime);
-                if (timeTotal) timeTotal.textContent = formatTime(audio.duration);
             }
         };
 
-        window.seekAudio = function (id) {
-            const audio = document.getElementById('audio-el-' + id);
-            const progress = document.getElementById('progress-' + id);
-            const seekTo = (progress.value / 100) * audio.duration;
-            audio.currentTime = seekTo;
+        window.playNext = function() {
+            if (currentTrackIndex < currentTrackList.length - 1) {
+                playTrack(currentTrackIndex + 1);
+            }
         };
 
-        window.setDuration = function (id) {
-            const audio = document.getElementById('audio-el-' + id);
-            const timeCurr = document.getElementById('time-curr-' + id);
-            const timeTotal = document.getElementById('time-total-' + id);
+        window.playPrev = function() {
+            if (currentTrackIndex > 0) {
+                playTrack(currentTrackIndex - 1);
+            }
+        };
+
+        function updatePlayPauseIcon() {
+            const icon = document.getElementById('player-play-icon');
+            const iconMobile = document.getElementById('player-play-icon-mobile');
+            const playPath = '<path d="M8 5v14l11-7z"/>';
+            const pausePath = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+            
+            if (icon) {
+                icon.innerHTML = isGlobalPlaying ? pausePath : playPath;
+                if (isGlobalPlaying) {
+                    icon.classList.remove('ml-0.5');
+                } else {
+                    icon.classList.add('ml-0.5');
+                }
+            }
+            if (iconMobile) {
+                iconMobile.innerHTML = isGlobalPlaying ? pausePath : playPath;
+            }
+            const fsIcon = document.getElementById('fs-player-play-icon');
+            if (fsIcon) {
+                fsIcon.innerHTML = isGlobalPlaying ? pausePath : playPath;
+                if (isGlobalPlaying) {
+                    fsIcon.classList.remove('ml-1');
+                } else {
+                    fsIcon.classList.add('ml-1');
+                }
+            }
+
+        }
+
+        window.updateGlobalProgress = function() {
+            const audio = document.getElementById('global-audio-el');
+            const progress = document.getElementById('player-progress');
+            const timeCurr = document.getElementById('player-time-curr');
+
+            if (!isNaN(audio.duration) && audio.duration > 0) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progress.value = percent;
+                progress.style.backgroundSize = percent + '% 100%';
+                timeCurr.textContent = formatTime(audio.currentTime);
+                
+                // FS Player sync
+                const fsProgress = document.getElementById('fs-player-progress');
+                if (fsProgress) {
+                    fsProgress.value = percent;
+                    fsProgress.style.backgroundSize = percent + '% 100%';
+                    document.getElementById('fs-player-time-curr').textContent = formatTime(audio.currentTime);
+                }
+
+            }
+        };
+
+        window.seekGlobalAudio = function() {
+            const audio = document.getElementById('global-audio-el');
+            const progress = document.getElementById('player-progress');
+            if (audio.duration) {
+                const seekTo = (progress.value / 100) * audio.duration;
+                audio.currentTime = seekTo;
+            }
+        };
+
+        window.setGlobalDuration = function() {
+            const audio = document.getElementById('global-audio-el');
+            const timeTotal = document.getElementById('player-time-total');
             if (!isNaN(audio.duration)) {
-                if (timeCurr) timeCurr.textContent = '0:00';
-                if (timeTotal) timeTotal.textContent = formatTime(audio.duration);
+                timeTotal.textContent = formatTime(audio.duration);
+                const fsTimeTotal = document.getElementById('fs-player-time-total');
+                if (fsTimeTotal) {
+                    fsTimeTotal.textContent = formatTime(audio.duration);
+                }
             }
+
         };
+
+        window.changeVolume = function() {
+            const audio = document.getElementById('global-audio-el');
+            const vol = document.getElementById('player-volume');
+            audio.volume = vol.value / 100;
+            vol.style.backgroundSize = vol.value + '% 100%';
+        };
+        
+        // initialize volume gradient
+        setTimeout(() => {
+            document.getElementById('player-volume').style.backgroundSize = '100% 100%';
+        }, 100);
 
         function renderAudioFiles(chapterId) {
             currentChapter = currentSubject.chapters.find(c => c.id === chapterId);
@@ -1008,62 +1291,43 @@
             const audioFiles = currentChapter.audioFiles || [];
             document.getElementById('audio-count').textContent = audioFiles.length;
 
+            currentTrackList = audioFiles;
+
             const container = document.getElementById('audio-files-container');
-            container.innerHTML = '';
+            container.innerHTML = `
+                <div class="grid grid-cols-[40px_1fr_60px] gap-4 px-4 py-2 border-b border-slate-200 dark:border-white/5 text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">
+                    <div class="text-center">#</div>
+                    <div>Title</div>
+                    <div class="text-right flex justify-end">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                </div>
+            `;
 
             audioFiles.forEach((file, idx) => {
-                const fId = file.id;
-                const paddedIdx = (idx + 1).toString().padStart(2, '0');
+                const row = document.createElement('div');
+                row.id = 'track-row-' + idx;
+                row.className = "grid grid-cols-[40px_1fr_60px] gap-4 px-4 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 group cursor-pointer transition-colors items-center";
+                row.onclick = () => playTrack(idx);
+                
+                let isCurrent = (currentTrackIndex === idx);
 
-                const card = document.createElement('div');
-                card.id = 'wrapper-' + fId;
-                card.className = "relative overflow-hidden p-6 rounded-[2rem] bg-slate-800 text-white shadow-xl transition-all duration-300 w-full mb-6 max-w-2xl mx-auto";
-
-                card.innerHTML = `
-                    <div class="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900 opacity-80 backdrop-blur-3xl"></div>
-                    <div class="relative z-10 w-full">
-                        
-                        <div class="mb-5 flex flex-col items-start gap-1 cursor-pointer overflow-hidden w-full" onclick="togglePlay(${fId})">
-                            <div class="marquee-container">
-                                <h4 id="title-${fId}" class="font-bold text-white text-xl sm:text-2xl mb-1 marquee-content" title="${file.title}">
-                                    <span class="pr-10">${file.title}</span><span class="pr-10">${file.title}</span>
-                                </h4>
-                            </div>
-                            <p class="text-sm text-slate-400 font-medium">${currentChapter.title} &bull; Track ${paddedIdx}</p>
-                        </div>
-
-                        <div class="w-full mb-2 cursor-pointer relative group">
-                            <input type="range" id="progress-${fId}" value="0" min="0" max="100" step="0.1" class="progress-dark" oninput="seekAudio(${fId})">
-                            <div class="flex justify-between items-center mt-1 text-[11px] text-slate-400 font-medium tracking-wide">
-                                <span id="time-curr-${fId}">0:00</span>
-                                <span id="time-total-${fId}">0:00</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between mt-1 px-1 sm:px-3">
-                            <button class="text-slate-400 hover:text-white transition-colors focus:outline-none ml-1">
-                                
-                            </button>
-                            
-                            <div class="flex items-center gap-6 sm:gap-8">
-                                <button id="btn-play-${fId}" class="text-slate-900 bg-white hover:scale-105 transition-transform focus:outline-none p-3.5 rounded-full shadow-lg" onclick="togglePlay(${fId})">
-                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-0.5">
-                                        <path d="M8 5v14l11-7z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            
-                            <button class="text-slate-400 hover:text-white transition-colors focus:outline-none mr-1">
-                                
-                            </button>
-                        </div>
+                row.innerHTML = `
+                    <div class="text-center relative flex justify-center text-slate-500 dark:text-slate-400 font-medium">
+                        <span id="track-num-${idx}" class="group-hover:hidden ${isCurrent ? 'hidden' : ''}">${idx + 1}</span>
+                        <svg class="w-4 h-4 text-slate-700 dark:text-white hidden group-hover:block track-play ${isCurrent ? '!text-spotify-DEFAULT block' : ''}" viewBox="0 0 24 24" fill="currentColor">
+                            ${isCurrent && isGlobalPlaying ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' : '<path d="M8 5v14l11-7z"/>'}
+                        </svg>
                     </div>
-                    
-                    <audio id="audio-el-${fId}" ontimeupdate="updateProgress(${fId})" onloadedmetadata="setDuration(${fId})" onended="togglePlay(${fId})" class="hidden">
-                        <source src="${file.filePath}" type="audio/mpeg">
-                    </audio>
+                    <div class="overflow-hidden">
+                        <div class="track-title font-medium text-slate-900 dark:text-white truncate ${isCurrent ? 'text-spotify-DEFAULT' : ''}">${file.title}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">${currentChapter.title}</div>
+                    </div>
+                    <div class="text-right text-sm text-slate-500 dark:text-slate-400">
+                        --:--
+                    </div>
                 `;
-                container.appendChild(card);
+                container.appendChild(row);
             });
 
             updateBreadcrumbs();
